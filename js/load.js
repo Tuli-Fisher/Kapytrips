@@ -1,4 +1,5 @@
 (function(){
+    'use strict';
 
     async function loadParks() {
         try {
@@ -22,5 +23,29 @@
         }
     }
 
+    async function loadattractions() {
+        try {
+            const response = await fetch('https://opensheet.elk.sh/1lR_-c5QGmLBjVOOOCHvOcEuTVGIWg6u3uubtcCaeOk4/Sheet1');
+           
+            const data = await response.json();
+
+            const container = document.querySelector('.container');
+            container.innerHTML = '';
+
+            for (const a of attractions) {
+            container.innerHTML += `
+                <div class="card">
+                <h2>${a.name}</h2>
+                <p>${a.address}</p>
+                <p class="time">${a.driveTime}</p>
+                <p>${a.phoneNumber}</p>
+                </div>`;
+            }
+        } catch (error) {
+            console.error('Error loading park data:', error);
+        }
+    }
+
     loadParks();
+    loadattractions();
 })();
