@@ -32,7 +32,7 @@
             const container = document.querySelector('.container');
             container.innerHTML = '';
 
-            for (const a of attractions) {
+            for (const a of data) {
             container.innerHTML += `
                 <div class="card">
                 <h2>${a.name}</h2>
