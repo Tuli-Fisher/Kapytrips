@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trip Ideas Around New Jersey</title>
+<link rel="icon" type="image/x-ico" href="images/favicon-32x32.png">
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f2f6f5;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+    header {
+        background-color: #4fa28a;
+        color: white;
+        text-align: center;
+        padding: 2rem 1rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        letter-spacing: 1px;
+    }
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: auto;
+    }
+    .card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        padding: 2rem;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    }
+    .card h2 {
+        color: #2e7d68;
+        font-size: 1.5rem;
+        margin-bottom: 0.7rem;
+    }
+    .card p {
+        margin: 0.5rem 0;
+        font-size: 1.1rem;
+    }
+    .time {
+        font-weight: bold;
+        color: #4fa28a;
+    }
+    #detailView {
+        display: none;
+        max-width: 800px;
+        margin: 2rem auto;
+        background-color: white;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    #detailView h2 {
+        font-size: 2rem;
+        color: #2e7d68;
+    }
+    #detailView p {
+        font-size: 1.2rem;
+        margin: 0.5rem 0;
+    }
+    #backBtn {
+        display: inline-block;
+        margin-bottom: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #4fa28a;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    footer {
+        background-color: #4fa28a;
+        color: white;
+        text-align: center;
+        padding: 1rem;
+        margin-top: 2rem;
+        font-size: 0.9rem;
+    }
+</style>
+</head>
+<body>
+<header>
+    <h1>🌳 Local Trip Ideas Around New Jersey</h1>
+</header>
+
+<div class="container" id="parksContainer">
+    <!-- Tiles will go here -->
+</div>
+
+<div id="detailView">
+    <button id="backBtn">← Back</button>
+    <h2 id="parkName"></h2>
+    <p id="parkAddress"></p>
+    <p id="parkDistance"></p>
+    <p id="parkHours"></p>
+    <p id="parkRestrooms"></p>
+</div>
+
+<footer>
+    © 2025 Local Adventures NJ | Explore, Relax, Enjoy 🌞 - Shoutout to TuliWorks Studio!
+</footer>
+
+<script>
+// Sample data (replace with OpenSheet fetch if needed)
+const parks = [
+    {Name:"Allaire State Park", Address:"4265 Atlantic Ave, Farmingdale, NJ 07727", Distance:20, Hours:"8am - 6pm", Restrooms:"Yes"},
+    {Name:"Deerwood Park", Address:"2740 Lakewood-Allenwood Rd, Howell, NJ 07731", Distance:20, Hours:"7am - 5pm", Restrooms:"No"},
+    {Name:"Jackson Justice Complex", Address:"1 Jackson Dr, Jackson, NJ 08527", Distance:14, Hours:"9am - 4pm", Restrooms:"Yes"}
+];
+
+// Sort by distance
+parks.sort((a,b)=>a.Distance-b.Distance);
+
+const container = document.getElementById('parksContainer');
+const detailView = document.getElementById('detailView');
+
+function renderParks(list) {
+    container.innerHTML = '';
+    list.forEach(park => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <h2>${park.Name}</h2>
+            <p>${park.Address}</p>
+            <p class="time">~${park.Distance} min</p>
+        `;
+        card.addEventListener('click', () => showDetail(park));
+        container.appendChild(card);
+    });
+}
+
+function showDetail(park) {
+    container.style.display = 'none';
+    detailView.style.display = 'block';
+    document.getElementById('parkName').innerText = park.Name;
+    document.getElementById('parkAddress').innerText = park.Address;
+    document.getElementById('parkDistance').innerText = `Distance: ~${park.Distance} min`;
+    document.getElementById('parkHours').innerText = `Hours: ${park.Hours}`;
+    document.getElementById('parkRestrooms').innerText = `Restrooms: ${park.Restrooms}`;
+}
+
+document.getElementById('backBtn').addEventListener('click', () => {
+    detailView.style.display = 'none';
+    container.style.display = 'grid';
+});
+
+renderParks(parks);
+</script>
+</body>
+</html>
