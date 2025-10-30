@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trip Ideas Around New Jersey</title>
+    <link rel="icon" type="image/x-ico" href="images/favicon-32x32.png" />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f2f6f5;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+
+      header {
+        background-color: #4fa28a;
+        color: white;
+        text-align: center;
+        padding: 2rem 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        letter-spacing: 1px;
+      }
+
+      /* Toggle Filter Bar */
+      .filter-toggle {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        border: 1px solid #4fa28a;
+        border-radius: 10px;
+        overflow: hidden;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .toggle-btn {
+        background-color: white;
+        color: #4fa28a;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+        flex: 1;
+      }
+      .toggle-btn.active {
+        background-color: #4fa28a;
+        color: white;
+      }
+      .toggle-btn:not(:last-child) {
+        border-right: 1px solid #4fa28a;
+      }
+      .toggle-btn:hover:not(.active) {
+        background-color: #e0f0ed;
+      }
+
+      /* ===== PAGE LAYOUT ===== */
+      .page-layout {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 1rem;
+        max-width: 1400px;
+        margin: auto;
+        padding: 1rem;
+      }
+
+      .ad {
+        width: 150px;
+        height: 600px;
+        background-color: #e3f1ed;
+        border: 1px dashed #4fa28a;
+        color: #4fa28a;
+        text-align: center;
+        padding: 1rem;
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: 0.9rem;
+        position: sticky;
+        top: 2rem;
+      }
+
+      main {
+        flex: 1;
+        max-width: 800px;
+      }
+
+      /* ===== LINEAR LIST STYLE ===== */
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 0;
+      }
+
+      /* .card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        padding: 1.5rem 2rem;
+        transition: background-color 0.2s, transform 0.2s;
+        text-align: left;
+        cursor: pointer;
+      } */
+
+      .card{
+        background-color: white;
+        border-bottom: 2px solid #e0f0ed;
+        text-align: left;
+        padding: 1.5rem 2rem;
+      }
+
+      .card:hover {
+        background-color: #f7fbfa;
+        transform: translateY(-2px);
+      }
+      .card h2 {
+        margin: 0 0 0.4rem;
+        font-size: 1.4rem;
+        color: #2e7d68;
+      }
+      .card p {
+        margin: 0.2rem 0;
+        font-size: 1rem;
+        color: #333;
+      }
+      .time {
+        font-weight: bold;
+        color: #4fa28a;
+      }
+
+      /* ===== DETAIL VIEW ===== */
+      #detailView {
+        display: none;
+        max-width: 800px;
+        margin: 2rem auto;
+        background-color: white;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      #detailView h2 {
+        font-size: 2rem;
+        color: #2e7d68;
+      }
+      #detailView p {
+        font-size: 1.2rem;
+        margin: 0.5rem 0;
+      }
+      #backBtn {
+        display: inline-block;
+        margin-bottom: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #4fa28a;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      /* ===== FOOTER ===== */
+      footer {
+        background-color: #4fa28a;
+        color: white;
+        text-align: center;
+        padding: 1rem;
+        margin-top: 2rem;
+        font-size: 0.9rem;
+      }
+
+        /* controls container */
+        .controls-container {
+          display: flex;
+          flex-direction: row;
+          gap: 1rem;
+          align-items: center;
+        }
+
+        /*sorting select*/
+        #sorting-select {
+            border: 1px solid #4fa28a;
+            color: #4fa28a;
+            background-color: white;
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none;
+        }
+        #sorting-select:hover {
+            background-color: #e0f0ed;
+        }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 900px) {
+        .ad {
+          display: none;
+        }
+        .page-layout {
+          flex-direction: column;
+          align-items: center;
+        }
+    }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>🌳 Kapy Trips</h1>
+    </header>
+
+    <div class="page-layout">
+      <aside class="ad left-ad">Ad space</aside>
+
+      <main>
+
+        <div class="controls-container">
+
+          <div class="filter-toggle">
+            <button class="toggle-btn active" data-type="both">Both</button>
+            <button class="toggle-btn" data-type="park">Parks</button>
+            <button class="toggle-btn" data-type="attraction">
+              Attractions
+            </button>
+          </div>
+
+          <select  id="sorting-select">
+            <option value="distance-asc">Sort by Distance: Nearest</option>
+            <option value="distance-desc">Sort by Distance: Farthest</option>
+            <option value="name-asc">Sort by Name: A to Z</option>
+            <option value="name-desc">Sort by Name: Z to A</option>
+          </select>
+
+        </div>
+
+        <div class="container" id="parksContainer"></div>
+
+        <div id="detailView">
+          <button id="backBtn">← Back</button>
+          <h2 id="parkName"></h2>
+          <p id="parkAddress"></p>
+          <p id="parkDistance"></p>
+          <p id="parkHours"></p>
+          <p id="parkRestrooms"></p>
+        </div>
+      </main>
+
+      <aside class="ad right-ad">Ad space</aside>
+    </div>
+
+    <footer>
+      © 2025 Local Adventures NJ | Explore, Relax, Enjoy 🌞 - Shoutout to Tuli's
+      Studio!
+    </footer>
+
+    <!--<script>-->
+    // ===== SAMPLE DATA =====
+    //   const parks = [
+    //     {
+    //       Name: "Allaire State Park",
+    //       Address: "4265 Atlantic Ave, Farmingdale, NJ 07727",
+    //       Distance: 20,
+    //       Hours: "8am - 6pm",
+    //       Restrooms: "Yes",
+    //       Type: "park",
+    //     },
+    //     {
+    //       Name: "Deerwood Park",
+    //       Address: "2740 Lakewood-Allenwood Rd, Howell, NJ 07731",
+    //       Distance: 20,
+    //       Hours: "7am - 5pm",
+    //       Restrooms: "No",
+    //       Type: "park",
+    //     },
+    //     {
+    //       Name: "Jackson Justice Complex",
+    //       Address: "1 Jackson Dr, Jackson, NJ 08527",
+    //       Distance: 14,
+    //       Hours: "9am - 4pm",
+    //       Restrooms: "Yes",
+    //       Type: "attraction",
+    //     },
+    //     {
+    //       Name: "Spring Lake Boardwalk",
+    //       Address: "1 Ocean Ave, Spring Lake, NJ 07762",
+    //       Distance: 35,
+    //       Hours: "Open 24h",
+    //       Restrooms: "Yes",
+    //       Type: "attraction",
+    //     },
+    //   ];
+    <!--</script>-->
+
+    <script src="js/load.js"></script>
+
+    <!-- <script src="js/logic.js"></script> -->
+
+  </body>
+</html>

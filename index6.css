@@ -1,0 +1,189 @@
+ body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        background: #f5f9f4; /* light greenish background */
+        color: #333;
+      }
+
+      header {
+        background: #3b7a57; /* deep forest green */
+        color: white;
+        padding: 15px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        font-size: 1.6rem;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+      }
+
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 20px;
+      }
+
+      nav li {
+        position: relative;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px;
+        transition: color 0.2s ease;
+      }
+
+      nav a:hover {
+        color: #d1f0da; /* soft mint hover */
+      }
+
+      nav li:hover > ul {
+        display: block;
+      }
+
+      /* Dropdown */
+      nav ul ul {
+        display: none;
+        position: absolute;
+        top: 35px;
+        left: 0;
+        background: white;
+        color: black;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        min-width: 150px;
+        z-index: 10;
+      }
+
+      nav ul ul li {
+        padding: 10px;
+        white-space: nowrap;
+      }
+
+      nav ul ul li a {
+        color: #3b7a57;
+      }
+
+      nav ul ul li:hover {
+        background: #e8f3eb;
+      }
+
+      /* Hero */
+      .hero {
+        background: url("https://source.unsplash.com/1600x500/?park,new-jersey,nature")
+          center/cover;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 2.3rem;
+        font-weight: bold;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Main Layout */
+      .main-layout {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        gap: 20px;
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        /*background-image: url("images/background.png");*/
+        background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+      }
+
+      /* Ad space */
+      .adSpace {
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+      }
+
+      .adSpace h3 {
+        font-size: 1.1rem;
+        color: #3b7a57;
+        margin-bottom: 10px;
+      }
+
+      .adSpace img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Trip Grid */
+      .trip-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .trip-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .trip-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      }
+
+      .trip-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+      }
+
+      .trip-info {
+        padding: 15px;
+      }
+
+      .trip-info h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: #3b7a57;
+      }
+
+      .trip-info p {
+        font-size: 0.9rem;
+        color: #555;
+        margin-top: 8px;
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        background: #3b7a57;
+        color: white;
+        margin-top: 40px;
+        font-size: 0.9rem;
+      }
+
+      #detailView{
+        display:none;
+
+      }

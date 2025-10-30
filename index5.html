@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>New Jersey Trips — Inspired Layout</title>
+  <meta name="description" content="A catalogue of New Jersey family-friendly trips, activities and places." />
+  <style>
+    :root{
+      --accent:#0f7c82;
+      --accent-2:#074e50;
+      --muted:#666;
+      --card-bg:#fff;
+      --bg:#f6fbfb;
+      --max-width:1150px;
+      --radius:12px;
+      --shadow: 0 6px 20px rgba(8,20,25,0.06);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:#0b1720;
+      line-height:1.45;
+      -webkit-font-smoothing:antialiased;
+    }
+    .container{
+      max-width:var(--max-width);
+      margin:32px auto;
+      padding:0 20px;
+    }
+
+    /* header */
+    header.site-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:20px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;
+    }
+    .logo{
+      width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;
+      box-shadow:var(--shadow);
+    }
+    nav.top-nav{display:flex;gap:10px;align-items:center}
+    nav.top-nav a{padding:8px 12px;text-decoration:none;color:var(--muted);border-radius:8px;font-size:14px}
+    nav.top-nav a:hover{background:#e9f7f7;color:var(--accent-2)}
+
+    /* hero */
+    .hero{
+      background:linear-gradient(90deg, rgba(15,124,130,0.08), rgba(7,78,80,0.02));
+      border-radius:var(--radius);
+      padding:22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+    }
+    .hero h1{margin:0;font-size:22px}
+    .hero .controls{display:flex;gap:8px;align-items:center}
+    .chip{
+      background:#fff;padding:8px 12px;border-radius:999px;box-shadow:var(--shadow);font-size:14px;color:var(--muted)
+    }
+
+    /* layout */
+    .layout{
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:20px;
+    }
+
+    /* filters (sidebar top) */
+    .filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+    .filter-btn{background:#fff;padding:8px 12px;border-radius:999px;box-shadow:0 4px 12px rgba(10,30,30,0.04);cursor:pointer;border:1px solid rgba(2,10,10,0.03)}
+    .filter-btn.active{background:var(--accent);color:white;border:none}
+
+    /* posts grid */
+    .posts-grid{
+      display:grid;
+      grid-template-columns: repeat(2,1fr);
+      gap:18px;
+    }
+    .post-card{
+      background:var(--card-bg);
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      min-height:230px;
+    }
+    .post-image{
+      width:100%;
+      height:150px;
+      object-fit:cover;
+      display:block;
+    }
+    .post-body{padding:14px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .post-title{font-size:16px;margin:0;color:#092428}
+    .meta{font-size:13px;color:var(--muted)}
+    .excerpt{flex:1;font-size:14px;color:#223}
+    .read-more{
+      display:inline-block;margin-top:6px;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:600;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-size:14px;
+    }
+
+    /* sidebar */
+    aside.sidebar{
+      position:relative;
+    }
+    .sidebar .card{background:#fff;padding:16px;border-radius:12px;box-shadow:var(--shadow);margin-bottom:12px}
+    .sidebar h3{margin:0 0 10px 0;font-size:16px}
+    .chip-list{display:flex;flex-direction:column;gap:8px}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* pagination */
+    .pagination{display:flex;gap:8px;align-items:center;margin-top:18px}
+    .page-btn{padding:8px 12px;border-radius:8px;background:#fff;box-shadow:0 6px 20px rgba(10,20,20,0.04);border:1px solid rgba(2,10,10,0.03)}
+
+    footer{margin:36px 0 60px;color:var(--muted);font-size:13px;text-align:center}
+
+    /* responsive */
+    @media (max-width:980px){
+      .layout{grid-template-columns:1fr}
+      .posts-grid{grid-template-columns:repeat(1,1fr)}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="Home">
+        <div class="logo">BT</div>
+        <div>
+          <div style="font-weight:700">BeenThere-ish</div>
+          <div style="font-size:13px;color:var(--muted)">New Jersey trips (inspired)</div>
+        </div>
+      </a>
+
+      <nav class="top-nav" aria-label="Top navigation">
+        <a href="#">Home</a>
+        <a href="#">Trips</a>
+        <a href="#">Deals</a>
+        <a href="#">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-labelledby="category-title">
+      <div>
+        <h1 id="category-title">New Jersey — Trips & Activities</h1>
+        <p class="small" style="margin-top:6px">Parks, museums, farms, indoor fun and more — family-friendly suggestions from around New Jersey.</p>
+      </div>
+      <div class="controls">
+        <div class="chip">All</div>
+        <div class="chip" title="Sort by latest">Latest</div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <!-- main column -->
+      <main>
+        <!-- inline filter row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div class="filters" aria-label="Filters">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Outdoor</button>
+            <button class="filter-btn">Indoor</button>
+            <button class="filter-btn">Amusements</button>
+            <button class="filter-btn">Parks</button>
+            <button class="filter-btn">Museums</button>
+          </div>
+          <div style="font-size:13px;color:var(--muted)">Showing <strong>10</strong> results</div>
+        </div>
+
+        <section class="posts-grid" aria-label="Posts list">
+          <!-- Post 1 -->
+          <article class="post-card">
+            <img class="post-image" src="https://picsum.photos/seed/essex/800/400" alt="Essex County Paddle Boats, West Orange">
+            <div class="post-body">
+              <h2 class="post-title">Essex County Paddle Boats — West Orange</h2>
+              <div class="meta">By Sarah Einhorn · Oct 8, 2025 · Outdoor Activities · Essex County</div>
+              <p class="excerpt">Rent paddle boats on the Orange Reservoir next to Turtle Back Zoo — calm water, great views, and easy parking for families.</p>
+              <a class="read-more" href="#">Read more →</a>
+            </div>
+          </article>
+
+          <!-- Post 2 -->
+          <article class="post-card">
+            <img class="post-image" src="https://picsum.photos/seed/american-dream/800/400" alt="Power Up Arena Paramus">
+            <div class="post-body">
+              <h2 class="post-title">Power Up Arena — Paramus, NJ</h2>
+              <div class="meta">By Sarah Einhorn · Oct 8, 2025 · Indoor activities · Amusements</div>
+              <p class="excerpt">A high-tech play space inside Westfield Garden State Plaza — great for rainy days and birthday groups.</p>
+              <a class="read-more" href="#">Read more →</a>
+            </div>
+          </article>
+
+          <!-- Post 3 -->
+          <article class="post-card">
+            <img class="post-image" src="https://picsum.photos/seed/holland/800/400" alt="Holland Ridge Farms Cream Ridge">
+            <div class="post-body">
+              <h2 class="post-title">Holland Ridge Farms — Cream Ridge</h2>
+              <div class="meta">By Sarah Einhorn · Aug 3, 2025 · Farms · Lakewood</div>
+              <p class="excerpt">Flower fields that look like a fairytale — photo ops, seasonal activities, and a relaxed farm market.</p>
+              <a class="read-more" href="#">Read more →</a>
+            </div>
+          </article>
+
+          <!-- Post 4 -->
+          <article class="post-card">
+            <img class="post-image" src="https://picsum.photos/seed/long-branch/800/400" alt="Takanassee Beach Long Branch">
+            <div class="post-body">
+              <h2 class="post-title">Takanassee Beach — Long Branch</h2>
+              <div class="meta">By Sarah Einhorn · Jul 15, 2025 · Outdoor Activities · Free Trips</div>
+              <p class="excerpt">A local beach perfect for a low-key day trip — boardwalk, sand, and easy family access.</p>
+              <a class="read-more" href="#">Read more →</a>
+            </div>
+          </article>
+
+          <!-- Post 5 -->
+          <article class="post-card">
+            <img class="post-image" src="https://picsum.photos/seed/geoffrey/800/400" alt="Geoffrey's Express Train American Dream">
+            <div class="post-body">
+              <h2 class="post-title">Geoffrey’s Express Train — American Dream</h2>
+              <div class="meta">By Sarah Einhorn · Jun 6, 2025 · Indoor activities · American Dream Mall</div>
+              <p class="excerpt">A tiny train ride inside the mall that's perfect for toddlers — short, sweet, and easy to find near Toys 'R' Us.</p>
+              <a class="read-more" href="#">Read more →</a>
+            </div>
+          </article>
+
+          <!-- Post 6 -->
+          <article class="post-card">
+            <img class="post-image" src="https://picsum.photos/seed/nickelodeon/800/400" alt="Nickelodeon Universe American Dream">
+            <div class="post-body">
+              <h2 class="post-title">Nickelodeon Universe — East Rutherford</h2>
+              <div class="meta">By Sarah Einhorn · Apr 16, 2025 · Amusements · Bergen County</div>
+              <p class="excerpt">Indoor roller coasters and family rides — plan ahead for lines but great when the weather is rough.</p>
+              <a class="read-more" href="#">Read more →</a>
+            </div>
+          </article>
+
+          <!-- add more post cards as needed -->
+        </section>
+
+        <div class="pagination" aria-label="Pagination">
+          <button class="page-btn">« Prev</button>
+          <button class="page-btn">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">Next »</button>
+        </div>
+
+      </main>
+
+      <!-- sidebar -->
+      <aside class="sidebar" aria-label="Sidebar">
+        <div class="card">
+          <h3>Browse by Area</h3>
+          <div class="chip-list small" role="list">
+            <a href="#" class="filter-btn">All</a>
+            <a href="#" class="filter-btn">Bergen County</a>
+            <a href="#" class="filter-btn">Cape May</a>
+            <a href="#" class="filter-btn">Jersey Shore</a>
+            <a href="#" class="filter-btn">American Dream Mall</a>
+            <a href="#" class="filter-btn">Essex County</a>
+            <a href="#" class="filter-btn">Morris County</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Categories</h3>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <label><input type="checkbox" checked /> Outdoor Activities</label>
+            <label><input type="checkbox" checked /> Indoor activities</label>
+            <label><input type="checkbox" /> Farms</label>
+            <label><input type="checkbox" /> Amusements</label>
+            <label><input type="checkbox" /> Museums</label>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Quick search</h3>
+          <input type="search" placeholder="Search posts..." style="width:100%;padding:10px;border-radius:10px;border:1px solid #eee" />
+        </div>
+
+        <div class="card">
+          <h3>About</h3>
+          <p class="small">This page is an independent layout inspired by a collection of New Jersey trip posts. Replace any sample content or images with your own articles and links.</p>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      © 2025 — Inspired Trips • Built with ❤️ — replace with your site info
+    </footer>
+  </div>
+</body>
+</html>
