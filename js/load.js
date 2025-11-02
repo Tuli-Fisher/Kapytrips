@@ -39,6 +39,7 @@
     const parks = await loadParks(parkUrl);
     const attractions = await loadParks(attractionUrl);
 
+
     parks?.sort((a, b) => a.Distance - b.Distance);
     attractions?.sort((a, b) => a.Distance - b.Distance);
 
@@ -75,37 +76,58 @@
 
         detailView.style.display = "block";
 
-        document.getElementById("parkName").innerText = park.Name;
-        document.getElementById("parkAddress").innerText = park.Address;
+        document.getElementById("parkName").innerText = park.name;
+        document.getElementById("parkAddress").innerText = park.address;
         document.getElementById(
           "parkDistance"
-        ).innerText = `Distance: ~${park.Distance} min`;
-        document.getElementById("parkHours").innerText = `Hours: ${park.Hours}`;
+        ).innerText = `Distance: ~${park.driveTime} min`;
+        document.getElementById("parkHours").innerText = `Hours: ${park.hours}`;
         document.getElementById(
           "parkRestrooms"
-        ).innerText = `Restrooms: ${park.Restrooms}`;
-      }
+        ).innerText = `Restrooms: ${park.restrooms}`;
+    }
 
-      document.getElementById("backBtn").addEventListener("click", () => {
+    document.getElementById("backBtn").addEventListener("click", () => {
         detailView.style.display = "none";
         container.className = "trip-grid";
         container.style.display = "grid";
-      });
+    });
 
-      // ===== FILTER BUTTONS =====
-    //   const toggleButtons = document.querySelectorAll(".toggle-btn");
-    //   toggleButtons.forEach((btn) => {
-    //     btn.addEventListener("click", () => {
-    //       toggleButtons.forEach((b) => b.classList.remove("active"));
-    //       btn.classList.add("active");
-    //       const type = btn.dataset.type;
-    //       let filtered = parks;
-    //       if (type === "park")
-    //         filtered = parks.filter((p) => p.Type === "park");
-    //       if (type === "attraction")
-    //         filtered = parks.filter((p) => p.Type === "attraction");
-    //       renderParks(filtered);
-    //     });
-    //   });
+
+
+    const categories = [];
+    attractions.forEach(item => {
+        if (!categories.some(c => c.id === item.categoryID)) {
+            categories.push({ id: item.categoryID, name: item.category });
+        } 
+    });
+
+    const categorySelect = document.querySelector('#categorySelect');
+    // categorySelect.innerHTML = '<option value="all">All Categories</option>';
+
+    categories.forEach(cat => {
+        const option = document.createElement('li');
+        option.id = cat.id;
+        option.textContent = cat.name;
+        //option.innerHTML = `<a href="#">${cat.name}</a>`
+        categorySelect.appendChild(option);
+
+        option.addEventListener('click', () => {
+            const selectedCategory = option.value;
+            let filtered = attractions.filter(item => item.categoryID === selectedCategory);
+            renderParks(filtered);
+        });
+    });
+
+
+
+    //         let filtered = parks;
+    //         if (catagoryList. === "park")
+    //             filtered = parks.filter((p) => p.Type === "park");
+    //         if (type === "attraction")
+    //             filtered = parks.filter((p) => p.Type === "attraction");
+    //         renderParks(filtered);
+
+
 
 })();
