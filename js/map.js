@@ -3,6 +3,7 @@
 
     const bmg = { lat: 40.096044749672394, lng: -74.22197586384449 };
     let map;
+    const attractionUrl = 'https://opensheet.elk.sh/1lR_-c5QGmLBjVOOOCHvOcEuTVGIWg6u3uubtcCaeOk4/Sheet1';
 
     async function initMap(){
         
@@ -10,7 +11,7 @@
 
         map = new Map(document.querySelector("#map"), {
             center: bmg,
-            zoom: 15,
+            zoom: 12,
             mapId: 'DEMO_MAP_ID'
         });
     };
@@ -22,7 +23,7 @@
     const marker = new AdvancedMarkerElement({
         map,
         position: bmg,
-        title: 'Home'
+        title: 'Lakewood'
     });
 
     marker.addListener('click', () => {
@@ -36,9 +37,7 @@
     });
 
 
-    const attractionUrl = 'https://opensheet.elk.sh/1lR_-c5QGmLBjVOOOCHvOcEuTVGIWg6u3uubtcCaeOk4/Sheet1';
-
-     async function loadParks(url) {
+    async function loadParks(url) {
         try {
             const response = await fetch(url);
            
@@ -55,17 +54,14 @@
         }
     }
 
-
     const attractions = await loadParks(attractionUrl);
-
     const testingArray = attractions?.slice(0,10);
-
     const bounds = new google.maps.LatLngBounds();
 
     // testingArray?.forEach(async (attraction) => {
     if(!testingArray || testingArray.length === 0) return;
 
-    for (const attraction of testingArray){
+    async function getCoordinates(attraction) {
         let coordinates=[];
 
         if(!attraction.longtitude || !attraction.latitude){
@@ -101,12 +97,20 @@
             }catch(error){
                 console.error('Error fetching geocode data:', error);
             }
+
         } else {
             coordinates = {
                 lng: parseFloat(attraction.longtitude),
                 lat: parseFloat(attraction.latitude)
             }
         }
+
+        return coordinates;
+    }
+
+    for (const attraction of testingArray){
+        
+        const coordinates = await getCoordinates(attraction);
 
         if(coordinates) {
             bounds.extend(coordinates);

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>KAPY TRIPS — An Adventure In The Making</title>
+    <style>
+      :root {
+        --accent: #1ba6a3;
+        --bg: #f9f9f8;
+        --card: #fff;
+        --text: #222;
+        --muted: #666;
+        font-family: "Segoe UI", Roboto, system-ui, -apple-system,
+          "Helvetica Neue", Arial;
+      }
+
+      /* --- overall page --- */
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 0 20px;
+      }
+
+      /* --- header banner --- */
+      header {
+        background: var(--accent);
+        color: #fff;
+        text-align: center;
+        padding: 40px 10px 30px;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 34px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      header p {
+        margin: 6px 0 0 0;
+        font-size: 16px;
+        opacity: 0.9;
+      }
+
+      /* --- filters button + panel --- */
+      #filterToggle {
+        display: inline-block;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 20px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 20px 0;
+        transition: background 0.2s;
+      }
+      #filterToggle:hover {
+        background: #17908c;
+      }
+
+      #filtersPanel {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        padding: 16px;
+        margin-bottom: 20px;
+        display: none;
+      }
+      #filtersPanel.open {
+        display: block;
+      }
+
+      .filters-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .filters-grid input[type="text"],
+      .filters-grid select {
+        flex: 1 1 200px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+      }
+      .quick-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 12px;
+        font-size: 14px;
+      }
+      .quick-filters label {
+        cursor: pointer;
+        color: var(--text);
+      }
+      .reset-btn {
+        background: #eee;
+        border: none;
+        border-radius: 999px;
+        padding: 8px 16px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .reset-btn:hover {
+        background: #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>KAPY TRIPS</h1>
+      <p>An Adventure In The Making</p>
+    </header>
+
+    <div class="container">
+      <button id="filterToggle">Filters ▾</button>
+
+      <div id="filtersPanel" class="open">
+        <div class="filters-grid">
+          <input id="q" type="text" placeholder="Search parks..." />
+          <select id="typeFilter">
+            <option value="">All types</option>
+          </select>
+          <select id="amenityFilter">
+            <option value="">Any amenity</option>
+          </select>
+          <button id="reset" class="reset-btn">Reset</button>
+        </div>
+
+        <div class="quick-filters">
+          <label><input type="checkbox" id="chkPlayground" /> Playground</label>
+          <label><input type="checkbox" id="chkRestrooms" /> Restrooms</label>
+          <label
+            ><input type="checkbox" id="chkWalking" /> Walking Trails</label
+          >
+          <label><input type="checkbox" id="chkBike" /> Bike</label>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* toggle open/closed on small screens */
+      document.getElementById("filterToggle").addEventListener("click", () => {
+        document.getElementById("filtersPanel").classList.toggle("open");
+      });
+    </script>
+    <style>
+      /* --- park cards grid --- */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 18px;
+        margin-bottom: 40px;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 16px;
+        border: 1px solid #eee;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        padding: 16px 18px 14px;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+      }
+      .card h3 {
+        margin: 0 0 4px 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--accent);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+      }
+      .card .meta {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .card .info {
+        font-size: 14px;
+        color: var(--text);
+        line-height: 1.4;
+      }
+      .card .tags {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tag {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .no-results {
+        text-align: center;
+        color: var(--muted);
+        padding: 40px;
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid #eee;
+      }
+      footer {
+        text-align: center;
+        color: var(--muted);
+        font-size: 13px;
+        padding: 20px 0 30px;
+      }
+    </style>
+
+    <div class="container">
+      <div id="grid" class="grid" aria-live="polite"></div>
+      <div id="noresults" class="no-results" style="display: none">
+        No parks found.
+      </div>
+      <footer>© Kapy Trips — An Adventure In The Making</footer>
+    </div>
+    <script>
+      const parkUrl =
+        "https://opensheet.elk.sh/1lc-Lw7vvm3NXp4IvqvpU3i3s4h25MIG6M2dPm3t3T6U/Sheet1";
+      const attractionUrl =
+        "https://opensheet.elk.sh/1lR_-c5QGmLBjVOOOCHvOcEuTVGIWg6u3uubtcCaeOk4/Sheet1";
+
+      /* unified emoji mapping */
+      const AMEN_EMOJI = {
+        good: "🧒", // good for kids
+        category: "🏷️",
+        type: "🏞️",
+      };
+
+      /* load data from both sheets */
+      async function loadData() {
+        try {
+          const [parks, attractions] = await Promise.all([
+            fetchJSON(parkUrl),
+            fetchJSON(attractionUrl),
+          ]);
+          const all = [...parks, ...attractions];
+          renderTiles(all);
+        } catch (e) {
+          console.error("Error loading data:", e);
+          document.getElementById(
+            "grid"
+          ).innerHTML = `<div class="no-results">Could not load data.</div>`;
+        }
+      }
+
+      async function fetchJSON(url) {
+        const res = await fetch(url);
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(
+            `Fetch failed: ${res.status} ${res.statusText} — ${text}`
+          );
+        }
+        return res.json();
+      }
+
+      /* render function */
+      function renderTiles(data) {
+        const grid = document.getElementById("grid");
+        grid.innerHTML = "";
+
+        data.forEach((item) => {
+          const card = document.createElement("div");
+          card.className = "card";
+
+          const name = item.name || "Untitled";
+          const address = item.address || "";
+          const drive = item.driveTime || "";
+          const phone = item.phoneNumber || "";
+          const hours = item.hours || "";
+          const desc = item.description || "";
+          const kids = item["good for young kids"] || item.good || "";
+          const category = item.category || item.categoryID || "";
+          const type = item.type || "";
+
+          // header
+          const h = document.createElement("h3");
+          const emojis = [];
+          if (kids) emojis.push("🧒");
+          if (category) emojis.push("🏷️");
+          if (type) emojis.push("🏞️");
+          h.innerHTML = `${name} ${emojis.join(" ")}`;
+          card.appendChild(h);
+
+          // meta
+          const meta = document.createElement("div");
+          meta.className = "meta";
+          meta.textContent = [address, drive].filter(Boolean).join(" • ");
+          card.appendChild(meta);
+
+          // info
+          const info = document.createElement("div");
+          info.className = "info";
+          info.innerHTML = `
+      ${desc ? `<p>${desc}</p>` : ""}
+      ${hours ? `<p><strong>Hours:</strong> ${hours}</p>` : ""}
+      ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ""}
+      ${kids ? `<p><strong>Good for young kids:</strong> ${kids}</p>` : ""}
+      ${category ? `<p><strong>Category:</strong> ${category}</p>` : ""}
+      ${type ? `<p><strong>Type:</strong> ${type}</p>` : ""}
+    `;
+          card.appendChild(info);
+
+          // tags
+          const tags = document.createElement("div");
+          tags.className = "tags";
+          if (category) tags.appendChild(tag("🏷️", category));
+          if (type) tags.appendChild(tag("🏞️", type));
+          if (kids) tags.appendChild(tag("🧒", "Kids"));
+          grid.appendChild(card);
+          card.appendChild(tags);
+        });
+      }
+
+      function tag(emoji, label) {
+        const t = document.createElement("div");
+        t.className = "tag";
+        t.textContent = `${emoji} ${label}`;
+        return t;
+      }
+
+      /* init */
+      loadData();
+    </script>
+    <script>
+      /* === emoji mapping === */
+    //   const AMEN_EMOJI = {
+    //     playground: "🛝",
+    //     restrooms: "🚻",
+    //     walkingtrails: "🚶‍♀️",
+    //     bike: "🚴‍♂️",
+    //     picnic: "🧺",
+    //     water: "🚰",
+    //     shade: "🌳",
+    //   };
+
+      /* === all parks data === */
+      // const PARKS = [
+      //   {name:"Allaire State Park",location:"4265 Atlantic Ave, Farmingdale, NJ 07727",driveTime:"~20 min",playground:"very big and good for all ages",restrooms:"yes",walkingtrails:"lots",type:"park"},
+      //   {name:"Deerwood Park",location:"2740 Lakewood-Allenwood Rd, Howell, NJ 07731",driveTime:"~20 min",type:"park"},
+      //   {name:"Jackson Justice Complex",location:"1 Jackson Dr, Jackson, NJ 08527",driveTime:"~14 min",type:"park"},
+      //   {name:"Veterans Park",location:"489 Veterans Hwy, Jackson, NJ 08527",driveTime:"~15 min",type:"park"},
+      //   {name:"Jackson Jungle Play Park",location:"2 Jackson Dr, Jackson, NJ 08527",driveTime:"~14 min",type:"park"},
+      //   {name:"Patriots Park",location:"485 Bowman Rd, Jackson, NJ 08527",driveTime:"~16 min",type:"park"},
+      //   {name:"Johnson Park",location:"River Rd, Piscataway, NJ 08854",driveTime:"~35 min",type:"park"},
+      //   {name:"Dorbrook Recreation Area",location:"209 CR 537, Colts Neck, NJ 07722",driveTime:"~30 min",type:"park"},
+      //   {name:"Larry D’Zio Park",location:"100 D’Zio Dr, Jackson, NJ 08527",driveTime:"~15 min",type:"park"},
+      //   {name:"Spring Lake Boardwalk",location:"1 Ocean Ave, Spring Lake, NJ 07762",driveTime:"~35 min",type:"park"},
+      //   {name:"Manasquan Inlet",location:"Inlet Dr, Pt Pleasant Beach, NJ 08742",driveTime:"~25 min",type:"park"},
+      //   {name:"Brick Reservoir",location:"811 Herbertsville Rd, Brick, NJ 08724",driveTime:"~20 min",type:"park"},
+      //   {name:"Manasquan Reservoir",location:"311 Windeler Rd, Howell, NJ 07731",driveTime:"~20 min",type:"park"},
+      //   {name:"Sea Girt Beach",location:"Ocean Ave, Sea Girt, NJ 08750",driveTime:"~35 min",type:"park"},
+      //   {name:"Crescent Park",location:"Crescent Pkwy & 5th, Sea Girt, NJ 08750",driveTime:"~35 min",type:"park"},
+      //   {name:"Baltimore Playground",location:"Baltimore Blvd, Sea Girt, NJ 08750",driveTime:"~36 min",type:"park"},
+      //   {name:"Monument Park",location:"1401 Kingsley St, Asbury Park, NJ 07712",driveTime:"~30 min",type:"park"},
+      //   {name:"Edgemere Park",location:"Ocean Ave & Edgemere Dr, Allenhurst, NJ 07711",driveTime:"~30 min",type:"park"},
+      //   {name:"Double Trouble State Park",location:"581 Pinewald Keswick Rd, Bayville, NJ 08721",driveTime:"~35 min",type:"park"},
+      //   {name:"Cattus Island Co. Park",location:"1170 Cattus Island Blvd, Toms River, NJ 08753",driveTime:"~30 min",type:"park"},
+      //   {name:"Turkey Swamp Park",location:"200 Georgia Rd, Freehold, NJ 07728",driveTime:"~30 min",type:"park"},
+      //   {name:"Divine Park",location:"Passaic Ave, Spring Lake, NJ 07762",driveTime:"~35 min",type:"park"},
+      //   {name:"Ocean County Park",location:"659 Ocean Ave, Lakewood, NJ 08701",driveTime:"~7 min",type:"park"},
+      //   {name:"Echo Lake Park",location:"Prospect Ave, Howell, NJ 07731",driveTime:"~20 min",type:"park"},
+      //   {name:"Pine Park",location:"500 Country Club Dr, Lakewood, NJ 08701",driveTime:"~7 min",type:"park"},
+      //   {name:"Pine Lake Park",location:"Pine Lake St, Manchester, NJ 08759",driveTime:"~25 min",type:"park"},
+      //   {name:"Roosevelt Park Tennis Court",location:"151 Parsonage Rd, Edison, NJ 08837",driveTime:"~55 min",type:"park"},
+      //   {name:"Lake Shenandoah County Park",location:"660 Ocean Ave, Lakewood, NJ 08701",driveTime:"~6 min",type:"park"},
+      //   {name:"Jackson Spray Park",location:"45 Don Connor Blvd, Jackson, NJ 08527",driveTime:"~17 min",type:"park"},
+      //   {name:"Deep Cut Gardens",location:"152 Red Hill Rd, Middletown, NJ 07748",driveTime:"~35 min",type:"park"},
+      //   {name:"Mercer County Park",location:"1638 Old Trenton Rd, West Windsor, NJ 08550",driveTime:"~40 min",type:"park"},
+      //   {name:"Jakes Branch County Park",location:"1100 Double Trouble Rd, Beachwood, NJ 08722",driveTime:"~30 min",type:"park"},
+      //   {name:"Castle Park",location:"101 Midstreams Rd, Brick, NJ 08724",driveTime:"~18 min",type:"park"},
+      //   {name:"Riverwood Park Recreation",location:"1201 Riverwood Dr, Toms River, NJ 08753",driveTime:"~30 min",type:"park"},
+      //   {name:"Holmdel Park",location:"100 Red Hill Rd, Holmdel, NJ 07733",driveTime:"~30 min",type:"park"},
+      //   {name:"Windward Beach Park",location:"265 Princeton Ave, Brick, NJ 08724",driveTime:"~20 min",type:"park"},
+      //   {name:"Mantoloking Bridge Co. Park",location:"30 Mantoloking Rd, Brick, NJ 08723",driveTime:"~22 min",type:"park"},
+      //   {name:"Forked River Beach Bay Front Park",location:"Bay Ave & Beach Blvd, Forked River, NJ 08731",driveTime:"~40 min",type:"park"},
+      //   {name:"Monmouth Battlefield State Park",location:"16 Business Rt 33, Manalapan, NJ 07726",driveTime:"~40 min",type:"park"}
+      // ];
+
+      /* === filtering + rendering === */
+      const state = {
+        items: PARKS,
+        types: new Set(PARKS.map((p) => p.type)),
+        amenities: new Set(Object.keys(AMEN_EMOJI)),
+      };
+      buildFilters();
+      render();
+
+      document.getElementById("q").addEventListener("input", render);
+      document.getElementById("typeFilter").addEventListener("change", render);
+      document
+        .getElementById("amenityFilter")
+        .addEventListener("change", render);
+      document.getElementById("reset").addEventListener("click", () => {
+        [
+          "q",
+          "typeFilter",
+          "amenityFilter",
+          "chkPlayground",
+          "chkRestrooms",
+          "chkWalking",
+          "chkBike",
+        ].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el.type === "checkbox") el.checked = false;
+          else el.value = "";
+        });
+        render();
+      });
+      ["chkPlayground", "chkRestrooms", "chkWalking", "chkBike"].forEach((id) =>
+        document.getElementById(id).addEventListener("change", render)
+      );
+
+      function buildFilters() {
+        const typeSel = document.getElementById("typeFilter");
+        typeSel.innerHTML =
+          '<option value="">All types</option>' +
+          [...state.types].map((t) => `<option>${t}</option>`).join("");
+        const amenSel = document.getElementById("amenityFilter");
+        amenSel.innerHTML =
+          '<option value="">Any amenity</option>' +
+          [...state.amenities]
+            .map((a) => `<option value="${a}">${a}</option>`)
+            .join("");
+      }
+
+      function render() {
+        const grid = document.getElementById("grid");
+        const q = document.getElementById("q").value.toLowerCase();
+        const tFilter = document
+          .getElementById("typeFilter")
+          .value.toLowerCase();
+        const aFilter = document
+          .getElementById("amenityFilter")
+          .value.toLowerCase();
+        const chkPlay = document.getElementById("chkPlayground").checked;
+        const chkRest = document.getElementById("chkRestrooms").checked;
+        const chkWalk = document.getElementById("chkWalking").checked;
+        const chkBike = document.getElementById("chkBike").checked;
+
+        let items = state.items.slice();
+        if (tFilter)
+          items = items.filter((i) => (i.type || "").toLowerCase() === tFilter);
+        if (aFilter)
+          items = items.filter(
+            (i) => Object.keys(AMEN_EMOJI).includes(aFilter) && i[aFilter]
+          );
+        if (chkPlay) items = items.filter((i) => i.playground);
+        if (chkRest) items = items.filter((i) => i.restrooms);
+        if (chkWalk) items = items.filter((i) => i.walkingtrails);
+        if (chkBike) items = items.filter((i) => i.bike);
+        if (q)
+          items = items.filter((i) =>
+            Object.values(i).join(" ").toLowerCase().includes(q)
+          );
+
+        grid.innerHTML = "";
+        document.getElementById("noresults").style.display = items.length
+          ? "none"
+          : "block";
+
+        items.forEach((it) => {
+          const c = document.createElement("div");
+          c.className = "card";
+          const h = document.createElement("h3");
+          const emojis = Object.keys(AMEN_EMOJI)
+            .filter((k) => it[k])
+            .map((k) => AMEN_EMOJI[k])
+            .join(" ");
+          h.innerHTML = `${it.name} ${
+            emojis ? "<span>" + emojis + "</span>" : ""
+          }`;
+          const m = document.createElement("div");
+          m.className = "meta";
+          m.textContent = [it.location, it.driveTime]
+            .filter(Boolean)
+            .join(" • ");
+          const info = document.createElement("div");
+          info.className = "info";
+          info.textContent = it.hours ? `Hours: ${it.hours}` : "";
+          const tags = document.createElement("div");
+          tags.className = "tags";
+          Object.keys(AMEN_EMOJI).forEach((k) => {
+            if (it[k]) {
+              const tag = document.createElement("div");
+              tag.className = "tag";
+              tag.textContent = `${AMEN_EMOJI[k]} ${
+                k.charAt(0).toUpperCase() + k.slice(1)
+              }`;
+              tags.appendChild(tag);
+            }
+          });
+          c.append(h, m, info, tags);
+          grid.appendChild(c);
+        });
+      }
+    </script>
+  </body>
+</html>

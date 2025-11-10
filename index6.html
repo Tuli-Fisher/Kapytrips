@@ -72,7 +72,7 @@
     <div class="main-layout">
 
       <section class="adSpace">
-        <h3>Sponsored Ads</h3>
+        <!-- <h3>Sponsored Ads</h3> -->
         <img src="images/withSign.png" alt="Ad 1" />
         <img src="images/circle.png" alt="Ad 2" />
       </section>
@@ -96,9 +96,11 @@
 
       </section>
 
+     
+
       <div id="map" class="map-view"></div>
       
-      <div class="detailView list-view">
+      <div class="detailView ">
           <button id="backBtn">← Back</button>
           <h2 id="parkName"></h2>
           <p id="parkAddress"></p>
@@ -109,7 +111,10 @@
 
     </div>
 
-    
+     <ul class="map-toggle">
+          <li id="mapLi">Map View</li>
+          <li id="listLi">List View</li>
+      </ul>
 
     <footer>© 2025 Kapy Trips | Designed for Exploration</footer>
 
@@ -158,6 +163,6 @@
         // Add other bootstrap parameters as needed, using camel case.
       });
     </script>
-    <script src="js/map.js"></script>
+    <script src="js/load.js"></script>
   </body>
 </html>

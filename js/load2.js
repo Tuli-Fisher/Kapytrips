@@ -188,7 +188,7 @@
     // }
 
     // const attractions = await loadParks(attractionUrl);
-    const testingArray = attractions?.slice(0,10);
+    const testingArray = attractions?.slice(0,20);
     const bounds = new google.maps.LatLngBounds();
 
     // testingArray?.forEach(async (attraction) => {
