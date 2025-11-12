@@ -168,6 +168,11 @@
         border: 1px solid #eee;
       }
 
+      #map{
+        width: 100%;
+        height: 100%;
+      }
+
       .map-veiw {
         display: none;
       }
@@ -197,6 +202,62 @@
         padding: 30px 0;
       }
 
+      /*-------------*/
+
+      .switch-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+      }
+
+      .switch-label {
+        font-weight: 500;
+        color: #555;
+      }
+
+      .switch {
+        position: relative;
+        width: 70px;
+        height: 34px;
+        background-color: #ddd;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .slider {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 28px;
+        height: 28px;
+        background-color: white;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+      }
+
+      .switch.active {
+        background-color: #4fa28a;
+      }
+
+      .switch.active .slider {
+        transform: translateX(36px);
+      }
+
+      #tiles,
+      #map {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+      }
+
+      #map {
+        display: none;
+      }
+      /*-----------------*/
       @media (max-width: 900px) {
         body {
           grid-template-columns: 1fr;
@@ -232,10 +293,19 @@
     <aside class="filters">
       <h3>Filters</h3>
       <div class="filters-grid">
-        <select id="list-map">
+        <!-- <select id="list-map">
           <option value="">List Veiw</option>
           <option value="">Map Veiw</option>
-        </select>
+        </select> -->
+
+        <div class="switch-container">
+          <span class="switch-label">List</span>
+          <div class="switch" id="viewSwitch">
+            <div class="slider"></div>
+          </div>
+          <span class="switch-label">Map</span>
+        </div>
+
         <input id="searchInput" type="text" placeholder="Search parks..." />
         <select id="typeFilter">
           <option value="">All types</option>
@@ -407,9 +477,68 @@
 
       loadData();
     </script> -->
-    <script src="js/index9.js"></script>
-   
-    
-    <script src="js/map9.js"></script>
+
+    <script>
+      const switchElem = document.getElementById("viewSwitch");
+      const tiles = document.getElementById("tiles");
+      const map = document.getElementById("map");
+
+      switchElem.addEventListener("click", () => {
+        const isActive = switchElem.classList.toggle("active");
+
+        if (isActive) {
+          map.style.display = "block";
+          tiles.style.display = "none";
+          mapMaker(filteredData.slice(0,10));
+        } else {
+          map.style.display = "none";
+          tiles.style.display = "flex";
+        }
+      });
+    </script>
+    <script>
+      ((g) => {
+        var h,
+          a,
+          k,
+          p = "The Google Maps JavaScript API",
+          c = "google",
+          l = "importLibrary",
+          q = "__ib__",
+          m = document,
+          b = window;
+        b = b[c] || (b[c] = {});
+        var d = b.maps || (b.maps = {}),
+          r = new Set(),
+          e = new URLSearchParams(),
+          u = () =>
+            h ||
+            (h = new Promise(async (f, n) => {
+              await (a = m.createElement("script"));
+              e.set("libraries", [...r] + "");
+              for (k in g)
+                e.set(
+                  k.replace(/[A-Z]/g, (t) => "_" + t[0].toLowerCase()),
+                  g[k]
+                );
+              e.set("callback", c + ".maps." + q);
+              a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+              d[q] = f;
+              a.onerror = () => (h = n(Error(p + " could not load.")));
+              a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+              m.head.append(a);
+            }));
+        d[l]
+          ? console.warn(p + " only loads once. Ignoring:", g)
+          : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
+      })({
+        key: "AIzaSyAgQ-DYpv3KR4551QT6R8hb-_4fjklks0Q",
+        v: "weekly",
+        // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
+        // Add other bootstrap parameters as needed, using camel case.
+      });
+    </script>
+    <script src="js/map9.js" async></script>
+    <script src="js/index9.js" async></script>
   </body>
 </html>

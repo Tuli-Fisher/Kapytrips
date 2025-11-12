@@ -15,6 +15,7 @@
     // };
 
     let allData = [];
+    let filteredData;
 
     async function loadData() {
         try {
@@ -78,6 +79,8 @@
           return true;
         });
 
+        filteredData = items;
+
         nores.style.display = items.length ? "none" : "block";
 
         items.forEach((item) => {
@@ -93,7 +96,7 @@
           content.className = "tile-content";
 
           const h3 = document.createElement("h3");
-          h3.textContent = item.name || "Untitled";
+          h3.textContent = item.name || "whoops we seem to be missing something";
           content.appendChild(h3);
 
           const meta = document.createElement("div");
@@ -117,7 +120,7 @@
           if (item.category) tags.appendChild(tag(item.category));
           if (item.type) tags.appendChild(tag(item.type));
           if (item.good) tags.appendChild(tag("Kids"));
-          if(item.restrooms === 'y') tags.appendChild(tag("Restrooms"));
+          if(item.restrooms?.includes('y')) tags.appendChild(tag("Restrooms"));
           content.appendChild(tags);
 
           tile.appendChild(content);
@@ -125,6 +128,7 @@
         });
       }
 
+   
       ["searchInput", "typeFilter", /*"amenityFilter",*/"attrTypeFilter"].forEach((id) =>
         document.getElementById(id).addEventListener("input", () => render())
       );
@@ -137,3 +141,14 @@
     });
 
     loadData();
+
+    // document.querySelector('#list-map').addEventListener('change', (e) => {
+    //     if(e.target.value === 'map'){
+    //         mapMaker(filteredData);
+    //         document.querySelector('#tiles').style.display = "none";
+    //         document.querySelector('#map').style.display = "block";
+    //     } else {
+    //         document.querySelector('#tiles').style.display = "flex";
+    //         document.querySelector('#map').style.display = "none";
+    //     }
+    // });
