@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>KAPY TRIPS — Explore</title>
+    <title>KAPY TRIPS — An Adventure In The Making</title>
     <style>
       :root {
         --accent: #1ba6a3;
-        --bg: #f7f7f6;
+        --bg: #f9f9f8;
         --card: #fff;
         --text: #222;
         --muted: #666;
@@ -19,61 +19,33 @@
         margin: 0;
         background: var(--bg);
         color: var(--text);
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 0 20px;
       }
 
       header {
         background: var(--accent);
         color: #fff;
         text-align: center;
-        padding: 36px 10px;
+        padding: 40px 10px 30px;
       }
       header h1 {
         margin: 0;
-        font-size: 32px;
+        font-size: 34px;
+        letter-spacing: 1px;
         text-transform: uppercase;
       }
       header p {
         margin: 6px 0 0;
-        font-size: 15px;
+        font-size: 16px;
         opacity: 0.9;
       }
 
-      main {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        padding: 20px;
-      }
-
-      /* left ad area */
-      aside {
-        flex: 0 0 240px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-        padding: 16px;
-        height: fit-content;
-      }
-      aside h3 {
-        margin-top: 0;
-        font-size: 18px;
-        color: var(--accent);
-      }
-      aside p {
-        font-size: 14px;
-        color: var(--muted);
-      }
-
-      /* main content area */
-      section {
-        flex: 1;
-      }
-
-      /* filters */
+      /* filter controls */
       #filterToggle {
         display: inline-block;
         background: var(--accent);
@@ -84,7 +56,7 @@
         font-size: 15px;
         font-weight: 600;
         cursor: pointer;
-        margin: 10px 0 20px;
+        margin: 20px 0;
         transition: background 0.2s;
       }
       #filterToggle:hover {
@@ -95,7 +67,7 @@
         background: #fff;
         border-radius: 12px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        padding: 14px;
+        padding: 16px;
         margin-bottom: 20px;
         display: none;
       }
@@ -106,7 +78,7 @@
       .filters-grid {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 12px;
       }
 
       .filters-grid input[type="text"],
@@ -130,51 +102,62 @@
         background: #ddd;
       }
 
-      /* large tile cards */
-      .tile {
+      .quick-filters {
         display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 12px;
+        font-size: 14px;
+      }
+      .quick-filters label {
+        cursor: pointer;
+        color: var(--text);
+      }
+
+      /* grid + cards */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 18px;
+        margin-bottom: 40px;
+      }
+
+      .card {
         background: var(--card);
         border-radius: 16px;
         border: 1px solid #eee;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        overflow: hidden;
-        margin-bottom: 20px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        padding: 16px 18px 14px;
+        display: flex;
+        flex-direction: column;
         transition: transform 0.2s, box-shadow 0.2s;
       }
-      .tile:hover {
-        transform: translateY(-3px);
+      .card:hover {
+        transform: translateY(-4px);
         box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
       }
 
-      .tile img {
-        width: 260px;
-        height: 180px;
-        object-fit: cover;
-        background: #ddd;
-      }
-
-      .tile-content {
-        flex: 1;
-        padding: 14px 18px;
-      }
-
-      .tile-content h3 {
+      .card h3 {
         margin: 0 0 4px;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 700;
         color: var(--accent);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
       }
 
-      .tile-content .meta {
+      .card .meta {
         font-size: 13px;
         color: var(--muted);
-        margin-bottom: 6px;
+        margin-bottom: 8px;
       }
 
-      .tile-content .info {
+      .card .info {
         font-size: 14px;
         color: var(--text);
-        line-height: 1.45;
+        line-height: 1.4;
       }
 
       .tags {
@@ -187,8 +170,11 @@
         background: var(--accent);
         color: #fff;
         border-radius: 999px;
-        padding: 5px 10px;
+        padding: 6px 10px;
         font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
       }
 
       .no-results {
@@ -207,20 +193,12 @@
         padding: 20px 0 30px;
       }
 
-      @media (max-width: 850px) {
-        main {
+      @media (max-width: 600px) {
+        header h1 {
+          font-size: 26px;
+        }
+        .filters-grid {
           flex-direction: column;
-          align-items: stretch;
-        }
-        aside {
-          width: 100%;
-        }
-        .tile {
-          flex-direction: column;
-        }
-        .tile img {
-          width: 100%;
-          height: 200px;
         }
       }
     </style>
@@ -232,44 +210,44 @@
       <p>An Adventure In The Making</p>
     </header>
 
-    <main>
-      <aside>
-        <h3>Advertisements</h3>
-        <p>🗺️ Your ad here! Showcase your travel gear, food stops, or park events.</p>
-        <p>Contact: ads@kapytrips.com</p>
-      </aside>
+    <div class="container">
+      <button id="filterToggle">Filters ▾</button>
 
-      <section>
-        <button id="filterToggle">Filters ▾</button>
-
-        <div id="filtersPanel">
-          <div class="filters-grid">
-            <input id="q" type="text" placeholder="Search parks..." />
-            <select id="typeFilter">
-              <option value="">All types</option>
-            </select>
-            <select id="amenityFilter">
-              <option value="">Any amenity</option>
-            </select>
-            <button id="reset" class="reset-btn">Reset</button>
-          </div>
+      <div id="filtersPanel">
+        <div class="filters-grid">
+          <input id="q" type="text" placeholder="Search parks..." />
+          <select id="typeFilter">
+            <option value="">All types</option>
+          </select>
+          <select id="amenityFilter">
+            <option value="">Any amenity</option>
+          </select>
+          <button id="reset" class="reset-btn">Reset</button>
         </div>
 
-        <div id="tiles"></div>
-        <div id="noresults" class="no-results" style="display: none">
-          No parks found.
+        <div class="quick-filters">
+          <label><input type="checkbox" id="chkPlayground" /> Playground</label>
+          <label><input type="checkbox" id="chkRestrooms" /> Restrooms</label>
+          <label><input type="checkbox" id="chkWalking" /> Walking Trails</label>
+          <label><input type="checkbox" id="chkBike" /> Bike</label>
         </div>
-      </section>
-    </main>
+      </div>
 
-    <footer>© Kapy Trips — An Adventure In The Making</footer>
+      <div id="grid" class="grid" aria-live="polite"></div>
+      <div id="noresults" class="no-results" style="display: none">
+        No parks found.
+      </div>
+      <footer>© Kapy Trips — An Adventure In The Making</footer>
+    </div>
 
     <script>
+      /* ====== URLs ====== */
       const parkUrl =
         "https://opensheet.elk.sh/1lc-Lw7vvm3NXp4IvqvpU3i3s4h25MIG6M2dPm3t3T6U/Sheet1";
       const attractionUrl =
         "https://opensheet.elk.sh/1lR_-c5QGmLBjVOOOCHvOcEuTVGIWg6u3uubtcCaeOk4/Sheet1";
 
+      /* ====== emoji map ====== */
       const AMEN_EMOJI = {
         playground: "🛝",
         restrooms: "🚻",
@@ -280,10 +258,12 @@
         type: "🏞️",
       };
 
+      /* ====== init filters toggle ====== */
       const toggleBtn = document.getElementById("filterToggle");
       const panel = document.getElementById("filtersPanel");
       toggleBtn.addEventListener("click", () => panel.classList.toggle("open"));
 
+      /* ====== load and render ====== */
       let allData = [];
 
       async function loadData() {
@@ -296,9 +276,9 @@
           buildFilters(allData);
           render(allData);
         } catch (err) {
-          console.error(err);
-          document.getElementById("tiles").innerHTML =
+          document.getElementById("grid").innerHTML =
             '<div class="no-results">Error loading data.</div>';
+          console.error(err);
         }
       }
 
@@ -316,17 +296,17 @@
           amenities.map((a) => `<option>${a}</option>`).join("");
       }
 
-      function tag(label) {
+      function tag(emoji, label) {
         const el = document.createElement("div");
         el.className = "tag";
-        el.textContent = label;
+        el.textContent = `${emoji} ${label}`;
         return el;
       }
 
       function render(data = allData) {
-        const wrap = document.getElementById("tiles");
+        const grid = document.getElementById("grid");
         const nores = document.getElementById("noresults");
-        wrap.innerHTML = "";
+        grid.innerHTML = "";
 
         const q = document.getElementById("q").value.toLowerCase();
         const type = document
@@ -336,38 +316,46 @@
           .getElementById("amenityFilter")
           .value.toLowerCase();
 
+        const checks = {
+          playground: document.getElementById("chkPlayground").checked,
+          restrooms: document.getElementById("chkRestrooms").checked,
+          walking: document.getElementById("chkWalking").checked,
+          bike: document.getElementById("chkBike").checked,
+        };
+
         let items = data.filter((d) => {
           const text = Object.values(d).join(" ").toLowerCase();
           if (q && !text.includes(q)) return false;
           if (type && (d.type || "").toLowerCase() !== type) return false;
           if (amen && !d[amen]) return false;
+          for (const [k, v] of Object.entries(checks)) {
+            if (v && !d[k]) return false;
+          }
           return true;
         });
 
         nores.style.display = items.length ? "none" : "block";
 
         items.forEach((item) => {
-          const tile = document.createElement("div");
-          tile.className = "tile";
-
-          const img = document.createElement("img");
-          img.src = item.image || item.pic || "";
-          img.alt = item.name || "";
-          tile.appendChild(img);
-
-          const content = document.createElement("div");
-          content.className = "tile-content";
+          const card = document.createElement("div");
+          card.className = "card";
 
           const h3 = document.createElement("h3");
-          h3.textContent = item.name || "Untitled";
-          content.appendChild(h3);
+          const emojis = Object.keys(AMEN_EMOJI)
+            .filter((k) => item[k])
+            .map((k) => AMEN_EMOJI[k])
+            .join(" ");
+          h3.innerHTML = `${item.name || "Untitled"} ${
+            emojis ? `<span>${emojis}</span>` : ""
+          }`;
+          card.appendChild(h3);
 
           const meta = document.createElement("div");
           meta.className = "meta";
           meta.textContent = [item.address, item.driveTime]
             .filter(Boolean)
             .join(" • ");
-          content.appendChild(meta);
+          card.appendChild(meta);
 
           const info = document.createElement("div");
           info.className = "info";
@@ -376,21 +364,29 @@
             ${item.hours ? `<p><strong>Hours:</strong> ${item.hours}</p>` : ""}
             ${item.phoneNumber ? `<p><strong>Phone:</strong> ${item.phoneNumber}</p>` : ""}
           `;
-          content.appendChild(info);
+          card.appendChild(info);
 
           const tags = document.createElement("div");
           tags.className = "tags";
-          if (item.category) tags.appendChild(tag(item.category));
-          if (item.type) tags.appendChild(tag(item.type));
-          if (item.good) tags.appendChild(tag("Kids"));
-          content.appendChild(tags);
+          if (item.category) tags.appendChild(tag("🏷️", item.category));
+          if (item.type) tags.appendChild(tag("🏞️", item.type));
+          if (item.good) tags.appendChild(tag("🧒", "Kids"));
+          card.appendChild(tags);
 
-          tile.appendChild(content);
-          wrap.appendChild(tile);
+          grid.appendChild(card);
         });
       }
 
-      ["q", "typeFilter", "amenityFilter"].forEach((id) =>
+      /* ====== filter event bindings ====== */
+      [
+        "q",
+        "typeFilter",
+        "amenityFilter",
+        "chkPlayground",
+        "chkRestrooms",
+        "chkWalking",
+        "chkBike",
+      ].forEach((id) =>
         document.getElementById(id).addEventListener("input", () => render())
       );
 
