@@ -1,8 +1,5 @@
 'use strict';
 
-//const testingArray = attractions?.slice(0,10);
-//const bounds = new google.maps.LatLngBounds();
-
 
 async function mapMaker(mapArray){
 
@@ -48,10 +45,15 @@ async function mapMaker(mapArray){
     for (const attraction of mapArray){
         let coordinates ;
 
+        if(!attraction.address){
+            console.error('Invalid address for attraction:', attraction);
+            continue;
+        };
+
         try{
-            if(!attraction.longitude || !attraction.latitude){;
+            //if(!attraction.longitude || !attraction.latitude){;
                 coordinates = await getCoordinates(attraction);
-            }
+            //}
         } catch(error){
             console.error('Error getting coordinates for attraction:', attraction, error);
             continue;
@@ -84,43 +86,39 @@ async function mapMaker(mapArray){
 async function getCoordinates(attraction) {
     let coordinates=[];
 
-    if(!attraction.longtitude || !attraction.latitude){
-
-        if(!attraction.address){
-            console.error('Invalid address for attraction:', attraction);
-            return;
-        };
+    if(!attraction.longitude || !attraction.latitude){
 
         const encodedAddress = encodeURIComponent(attraction.address);
 
-
         try{
 
-                var requestOptions = {
-                    method: 'GET',
-                };
+            var requestOptions = {
+                method: 'GET',
+            };
 
-                const result = await fetch(`https://api.geoapify.com/v1/geocode/search?text=${encodedAddress}&apiKey=8aa441ac6237456fb8ca592512c9fee5`, requestOptions)
+            const result = await fetch(`https://api.geoapify.com/v1/geocode/search?text=${encodedAddress}&apiKey=8aa441ac6237456fb8ca592512c9fee5`, requestOptions)
                 
-                if(!result.ok){
-                    console.error("Geocode fetch error:", result.status, result.statusText, text);
-                }
+            if(!result.ok){
+                console.error("Geocode fetch error:", result.status, result.statusText);
+            }
 
-                const data = await result.json();
+            const data = await result.json();
 
-                console.log(attraction.name ,data.features[0].geometry.coordinates[0],data.features[0].geometry.coordinates[1]);
+            console.log('went to get coordinates',attraction.name ,data.features[0].geometry.coordinates[0],data.features[0].geometry.coordinates[1]);
 
-                coordinates = {
-                    lng: data.features[0].geometry.coordinates[0],
-                    lat: data.features[0].geometry.coordinates[1]
-                }
+            coordinates = {
+                lng: Number(data.features[0].geometry.coordinates[0]),
+                lat: Number(data.features[0].geometry.coordinates[1])
+            }
                
 
         }catch(error){
             console.error('Error fetching geocode data:', error);
         }
 
-    } 
+    } else{
+        coordinates = { lng: Number(attraction.longitude), lat: Number(attraction.latitude)}
+    }
 
     return coordinates;
 }
