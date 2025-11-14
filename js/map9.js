@@ -30,14 +30,19 @@ async function mapMaker(mapArray){
         title: 'Lakewood'
     });
 
-    marker.addListener('click', () => {
-        const infoWindow = new google.maps.InfoWindow({
-            content: 'BMG'
-        });
+    const infoWindow = new google.maps.InfoWindow({
+        content: 'BMG'
+    });
+
+    marker.element.addEventListener("mouseenter", () => {
         infoWindow.open({
             anchor: marker,
             map,
         });
+    });
+
+    marker.element.addEventListener('mouseout',()=>{
+        infoWindow.close()
     });
 
     
@@ -69,15 +74,19 @@ async function mapMaker(mapArray){
             title: attraction.name
         });
 
-        attractionMarker.addListener('click', () => {
-            const infoWindow = new google.maps.InfoWindow({
-                content: attraction.name
-            });
+        const infoWindow = new google.maps.InfoWindow({
+            content: attraction.name
+        });
+
+        attractionMarker.element.addEventListener('mouseover', () => {
+           
             infoWindow.open({
                 anchor: attractionMarker,
                 map,
             });
         });
+
+        attractionMarker.element.addEventListener('mouseout',()=> infoWindow.close());
     };
     map.fitBounds(bounds);
 

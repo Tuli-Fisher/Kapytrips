@@ -257,6 +257,11 @@
       #map {
         display: none;
       }
+
+      .hidden{
+        display: none;
+      }
+
       /*-----------------*/
       @media (max-width: 900px) {
         body {
@@ -488,11 +493,11 @@
 
         if (isActive) {
           map.style.display = "block";
-          tiles.style.display = "none";
-          mapMaker(filteredData.slice(0,10));
+          tiles.classList.add('hidden');
+          mapMaker(filteredData);
         } else {
           map.style.display = "none";
-          tiles.style.display = "flex";
+          tiles.classList.remove('hidden');
         }
       });
     </script>
