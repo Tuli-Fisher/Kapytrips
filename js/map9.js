@@ -86,7 +86,9 @@ async function mapMaker(mapArray){
             });
         });
 
-        attractionMarker.element.addEventListener('mouseout',()=> infoWindow.close());
+        attractionMarker.element.addEventListener('mouseout',()=>{
+            setTimeout(infoWindow.close(),1000);
+        });
     };
     map.fitBounds(bounds);
 

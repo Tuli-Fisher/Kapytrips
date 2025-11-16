@@ -1,5 +1,5 @@
     (function(){
-    parks.sort((a, b) => a.Distance - b.Distance);
+      parks.sort((a, b) => a.Distance - b.Distance);
 
       const container = document.getElementById("parksContainer");
       const detailView = document.getElementById("detailView");

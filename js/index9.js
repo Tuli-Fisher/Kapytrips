@@ -24,6 +24,7 @@ async function loadData() {
             fetch(attractionUrl).then((r) => r.json()),
         ]);
         allData = [...parks, ...attractions];
+        allData.sort((a, b) => a.driveTime - b.driveTime);
         buildFilters(allData);
         render(allData);
     } catch (err) {
@@ -60,6 +61,13 @@ function tag(label) {
     return el;
 }
 
+function SortType(array){
+    const sortVal = document.querySelector('#sortOrder').value;
+    if(sortVal === 'name'){
+        array.sort();
+    }
+};
+
 function render(data = allData) {
     const wrap = document.getElementById("tiles");
     const nores = document.getElementById("noresults");
@@ -81,6 +89,8 @@ function render(data = allData) {
 
     filteredData = items;
 
+    SortType(filteredData);
+
     nores.style.display = items.length ? "none" : "block";
 
     items.forEach((item) => {
@@ -99,9 +109,30 @@ function render(data = allData) {
         h3.textContent = item.name || "whoops we seem to be missing something";
         content.appendChild(h3);
 
+        function formatDriveTime(dt) {
+            if (!dt) return "";               // no time → show nothing
+
+            let minutes = parseInt(dt, 10);   // convert to number safely
+            if (isNaN(minutes)) return "";     // invalid input → ignore
+
+            if (minutes < 60) {
+                return `${minutes} min`;
+            }
+
+            const hours = Math.floor(minutes / 60);
+            const rem = minutes % 60;
+
+            if (rem === 0) {
+                return `${hours} hr`;
+            }
+
+            return `${hours} hr ${rem} min`;
+        }
+        const formatedTime = formatDriveTime(item.driveTime)
+
         const meta = document.createElement("div");
         meta.className = "meta";
-        meta.textContent = [item.address, item.driveTime]
+        meta.textContent = [item.address,formatedTime ]
             .filter(Boolean)
             .join(" • ");
         content.appendChild(meta);
@@ -129,13 +160,13 @@ function render(data = allData) {
 }
 
    
-["searchInput", "typeFilter", /*"amenityFilter",*/"attrTypeFilter"].forEach((id) =>
+["sortOrder","searchInput", "typeFilter", /*"amenityFilter",*/ "attrTypeFilter"].forEach((id) =>
     document.getElementById(id).addEventListener("input", () => render())
 );
 
 document.getElementById("reset").addEventListener("click", () => {
     document.querySelectorAll(".filters-grid input, .filters-grid select").forEach((el) => (el.value = ""));
-        render();
-    });
+    render();
+});
 
 loadData();
