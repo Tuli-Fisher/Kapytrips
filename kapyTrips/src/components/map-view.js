@@ -37,8 +37,12 @@ export async function renderMapView(data, containerId = "map") {
     }
 
     // Clear existing markers
-    currentMarkers.forEach(marker => marker.map = null);
-    currentMarkers = [];
+    if (currentMarkers.length > 0) {
+        currentMarkers.forEach(marker => {
+            marker.map = null;
+        });
+        currentMarkers = [];
+    }
 
     if (!data || data.length === 0) return;
 

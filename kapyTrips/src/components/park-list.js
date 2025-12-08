@@ -120,10 +120,19 @@ export function setupFilters(data, onFilterChange) {
     // Dependent Filter Logic (Park vs other types)
     if (typeSel) {
         typeSel.addEventListener("input", (e) => {
-            if (e.target.value === "park") {
-                document.querySelector("#attrTypeFilter")?.classList.add("hidden");
-            } else {
-                document.querySelector("#attrTypeFilter")?.classList.remove("hidden");
+            const attrTypeFilter = document.querySelector("#attrTypeFilter");
+            if (attrTypeFilter) {
+                // Reset value whenever type changes
+                attrTypeFilter.value = "";
+
+                if (e.target.value === "park") {
+                    attrTypeFilter.classList.add("hidden");
+                } else {
+                    attrTypeFilter.classList.remove("hidden");
+                }
+
+                // Force re-render to pick up the cleared value ensuring the list is correct
+                onFilterChange();
             }
         });
     }
