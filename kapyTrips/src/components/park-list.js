@@ -5,7 +5,7 @@ import { formatDriveTime } from "../utils/formatters.js";
  * @param {Array} data - List of items to render
  * @param {HTMLElement} container - Container element
  */
-export function renderParkList(data, container) {
+export function renderParkList(data, container, onTripClick) {
     container.innerHTML = "";
 
     if (data.length === 0) {
@@ -16,6 +16,11 @@ export function renderParkList(data, container) {
     data.forEach((item) => {
         const tile = document.createElement("div");
         tile.className = "tile";
+        // Make it interactive
+        tile.style.cursor = "pointer";
+        tile.onclick = () => {
+            if (onTripClick) onTripClick(item);
+        };
 
         // Image
         const img = document.createElement("img");

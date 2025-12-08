@@ -55,7 +55,7 @@ export async function getCoordinates(attraction) {
 
             if (data.features && data.features.length > 0) {
                 const [lng, lat] = data.features[0].geometry.coordinates;
-                // console.log(`Geocoded '${attraction.name}':`, { lat, lng });
+                console.log(`Geocoded '${attraction.name}':`, { lat, lng });
                 return { lng, lat };
             }
         } catch (error) {

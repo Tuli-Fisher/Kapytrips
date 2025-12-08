@@ -3,9 +3,12 @@ import { fetchAllData } from "./services/api.js";
 import { renderParkList, setupFilters, filterData } from "./components/park-list.js";
 import { renderMapView } from "./components/map-view.js";
 
+import { renderTripDetail } from "./components/trip-detail.js";
+
 // State
 let allData = [];
 let isMapView = false;
+let lastScrollPosition = 0;
 
 // DOM Elements
 const switchElem = document.getElementById("viewSwitch");
@@ -30,9 +33,56 @@ async function init() {
       });
     }
 
+    // Navigation Logic
+    setupNavigation();
+
   } catch (error) {
     console.error("Failed to initialize app:", error);
     tilesContainer.innerHTML = '<div class="no-results">Error loading data. Please try again later.</div>';
+  }
+}
+
+function setupNavigation() {
+  const navLinks = document.querySelectorAll("nav a");
+  const exploreBtn = document.getElementById("explore-btn");
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const viewId = link.getAttribute("data-view");
+      switchView(viewId);
+
+      // Update active state
+      navLinks.forEach(l => l.classList.remove("active"));
+      link.classList.add("active");
+    });
+  });
+
+  if (exploreBtn) {
+    exploreBtn.addEventListener("click", () => {
+      switchView("trips");
+      // Update nav active state manually for the button
+      navLinks.forEach(l => l.classList.remove("active"));
+      document.querySelector('nav a[data-view="trips"]')?.classList.add("active");
+    });
+  }
+}
+
+function switchView(viewName) {
+  // Hide all views
+  document.querySelectorAll(".view").forEach((view) => {
+    view.classList.add("hidden");
+  });
+
+  // Show target view
+  const targetView = document.getElementById(`${viewName}-view`);
+  if (targetView) {
+    targetView.classList.remove("hidden");
+  }
+
+  // Special handling for map resize when switching to trips view
+  if (viewName === "trips" && isMapView) {
+    updateView(); // Re-render to ensure map sizes correctly if needed
   }
 }
 
@@ -45,6 +95,29 @@ function toggleViewMode() {
     mapContainer.style.display = "none";
     tilesContainer.classList.remove("hidden");
   }
+}
+
+function handleTripClick(trip) {
+  const detailContainer = document.getElementById("trip-detail-view");
+  const tripsView = document.getElementById("trips-view");
+
+  // Save scroll position
+  lastScrollPosition = window.scrollY;
+
+  // Render detail
+  renderTripDetail(trip, detailContainer, () => {
+    detailContainer.classList.add("hidden");
+    tripsView.classList.remove("hidden");
+    // Restore scroll position
+    window.scrollTo(0, lastScrollPosition);
+  });
+
+  // Toggle views
+  tripsView.classList.add("hidden");
+  detailContainer.classList.remove("hidden");
+
+  // Scroll to top
+  window.scrollTo(0, 0);
 }
 
 function updateView() {
@@ -71,7 +144,7 @@ function updateView() {
   if (isMapView) {
     renderMapView(filteredData);
   } else {
-    renderParkList(filteredData, tilesContainer);
+    renderParkList(filteredData, tilesContainer, handleTripClick);
   }
 }
 
