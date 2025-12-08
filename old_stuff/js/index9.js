@@ -23,7 +23,7 @@ async function loadData() {
             fetch(parkUrl).then((r) => r.json()),
             fetch(attractionUrl).then((r) => r.json()),
         ]);
-        allData = [...parks, ...attractions];
+        allData = [...parks, ...attractions].filter(p => p.name.trim() !== '');
         allData.sort((a, b) => a.driveTime - b.driveTime);
         buildFilters(allData);
         render(allData);
@@ -39,7 +39,7 @@ function buildFilters(data) {
     const types = [...new Set(data.map((d) => d.type).filter(Boolean))];
     typeSel.innerHTML =
     '<option value="">All types</option>' +
-    types.map((t) => `<option>${t}</option>`).join("");
+    types.map((t) => `<option value="${t.toLowerCase()}">${t}</option>`).join("");
 
     const attractionFilter = document.getElementById("attrTypeFilter");
     const attractionTypes = [...new Set(data.map((d) => d.category).filter(Boolean))];
@@ -63,8 +63,11 @@ function tag(label) {
 
 function SortType(array){
     const sortVal = document.querySelector('#sortOrder').value;
+    if(sortVal === 'distance'){
+        array.sort((a, b) => a.driveTime - b.driveTime);
+    }
     if(sortVal === 'name'){
-        array.sort();
+        array.sort((a, b) => a.name.localeCompare(b.name));
     }
 };
 
@@ -109,25 +112,6 @@ function render(data = allData) {
         h3.textContent = item.name || "whoops we seem to be missing something";
         content.appendChild(h3);
 
-        function formatDriveTime(dt) {
-            if (!dt) return "";               // no time → show nothing
-
-            let minutes = parseInt(dt, 10);   // convert to number safely
-            if (isNaN(minutes)) return "";     // invalid input → ignore
-
-            if (minutes < 60) {
-                return `${minutes} min`;
-            }
-
-            const hours = Math.floor(minutes / 60);
-            const rem = minutes % 60;
-
-            if (rem === 0) {
-                return `${hours} hr`;
-            }
-
-            return `${hours} hr ${rem} min`;
-        }
         const formatedTime = formatDriveTime(item.driveTime)
 
         const meta = document.createElement("div");
@@ -159,10 +143,41 @@ function render(data = allData) {
     });
 }
 
-   
-["sortOrder","searchInput", "typeFilter", /*"amenityFilter",*/ "attrTypeFilter"].forEach((id) =>
+
+function formatDriveTime(dt) {
+            if (!dt) return "";               // no time → show nothing
+
+            let minutes = parseInt(dt, 10);   // convert to number safely
+            if (isNaN(minutes)) return "";     // invalid input → ignore
+
+            if (minutes < 60) {
+                return `${minutes} min`;
+            }
+
+            const hours = Math.floor(minutes / 60);
+            const rem = minutes % 60;
+
+            if (rem === 0) {
+                return `${hours} hr`;
+            }
+
+            return `${hours} hr ${rem} min`;
+}
+
+["sortOrder","searchInput", /*"amenityFilter",*/ "attrTypeFilter"].forEach((id) =>
     document.getElementById(id).addEventListener("input", () => render())
 );
+
+/////needs work
+console.log(document.querySelector('#typeFilter'));
+document.querySelector('#typeFilter').addEventListener('input',e =>{
+    if(e.target.value === 'park'){
+        document.querySelector('#attrTypeFilter').classList.add('active-select');
+    }else{
+        document.querySelector('#attrTypeFilter').classList.remove('active-select');
+    }
+
+});
 
 document.getElementById("reset").addEventListener("click", () => {
     document.querySelectorAll(".filters-grid input, .filters-grid select").forEach((el) => (el.value = ""));
