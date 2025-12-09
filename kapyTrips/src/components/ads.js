@@ -28,6 +28,11 @@ export function renderAds(container, horizontal = false) {
         const adDiv = document.createElement("div");
         adDiv.className = "ad-item";
 
+        const label = document.createElement("span");
+        label.className = "ad-label";
+        label.textContent = "Sponsored";
+        adDiv.appendChild(label);
+
         const img = document.createElement("img");
         img.src = ad.src;
         img.alt = ad.alt;

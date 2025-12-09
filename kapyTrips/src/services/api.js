@@ -1,5 +1,5 @@
-const PARK_URL = "https://opensheet.elk.sh/1lc-Lw7vvm3NXp4IvqvpU3i3s4h25MIG6M2dPm3t3T6U/Sheet1";
-const ATTRACTION_URL = "https://opensheet.elk.sh/1lR_-c5QGmLBjVOOOCHvOcEuTVGIWg6u3uubtcCaeOk4/Sheet1";
+const PARK_URL = "https://opensheet.elk.sh/1lc-Lw7vvm3NXp4IvqvpU3i3s4h25MIG6M2dPm3t3T6U/parks";
+const ATTRACTION_URL ="https://opensheet.elk.sh/1lc-Lw7vvm3NXp4IvqvpU3i3s4h25MIG6M2dPm3t3T6U/attractions";
 const GEOAPIFY_KEY = import.meta.env.VITE_GEOAPIFY_KEY;
 
 export async function fetchAllData() {

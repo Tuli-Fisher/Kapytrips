@@ -318,7 +318,6 @@ aside.ads {
   gap: 15px;
   position: sticky;
   top: 100px;
-  /* Below header */
   height: fit-content;
 }
 
@@ -327,7 +326,7 @@ aside.ads {
   gap: 15px;
 }
 
-/* Horizontal ads for Landing Page */
+/* --- Horizontal ads (Landing Page) --- */
 .ads-horizontal {
   flex-direction: row;
   justify-content: center;
@@ -336,16 +335,11 @@ aside.ads {
   max-width: 1200px;
 }
 
-.ads-vertical {
-  flex-direction: column;
-  width: 100%;
-}
-
 .ads-horizontal .ad-item {
   width: 250px;
 }
 
-.ad-item img {
+.ads-horizontal .ad-item img {
   width: 100%;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -353,8 +347,46 @@ aside.ads {
   object-fit: cover;
 }
 
-.ad-item img:hover {
+.ads-horizontal .ad-item img:hover {
   transform: scale(1.03);
+}
+
+.ads-horizontal .ad-label {
+  display: none;
+}
+
+/* --- Vertical ads (Trips Page) --- */
+.ads-vertical {
+  flex-direction: column;
+  width: 100%;
+  gap: 25px;
+}
+
+.ads-vertical .ad-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ads-vertical .ad-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888;
+  font-weight: 600;
+}
+
+.ads-vertical .ad-item img {
+  width: 100%;
+  border-radius: 8px;
+  /* integrated look: no shadow, subtle border if needed */
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  object-fit: cover;
+  transition: opacity 0.2s;
+}
+
+.ads-vertical .ad-item img:hover {
+  opacity: 0.9;
 }
 
 /* Override trips-layout ads specifically if needed, but generic above works */
