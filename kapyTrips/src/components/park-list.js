@@ -144,10 +144,12 @@ export function setupFilters(data, onFilterChange) {
 }
 
 export function filterData(data, filters) {
-    const { searchQuery, type, attrType, sortOrder } = filters;
+    const { searchQuery, type, attrType, sortOrder, bennoMode } = filters;
 
     let filtered = data.filter(d => {
         const text = Object.values(d).join(" ").toLowerCase();
+
+        if (bennoMode && !text.includes("benno")) return false;
 
         if (searchQuery && !text.includes(searchQuery)) return false;
         if (type && (d.type || "").toLowerCase() !== type) return false;

@@ -9,6 +9,7 @@ import { renderTripDetail } from "./components/trip-detail.js";
 // State
 let allData = [];
 let isMapView = false;
+let isBennoMode = false;
 let lastScrollPosition = 0;
 
 // DOM Elements
@@ -55,7 +56,19 @@ function setupNavigation() {
     link.addEventListener("click", (e) => {
       e.preventDefault();
       const viewId = link.getAttribute("data-view");
-      switchView(viewId);
+
+      if (viewId === "benno-trips") {
+        isBennoMode = true;
+        switchView("trips");
+      } else if (viewId === "trips") {
+        isBennoMode = false;
+        switchView("trips");
+      } else {
+        isBennoMode = false;
+        switchView(viewId);
+      }
+
+      updateView();
 
       // Update active state
       navLinks.forEach(l => l.classList.remove("active"));
@@ -65,6 +78,7 @@ function setupNavigation() {
 
   if (exploreBtn) {
     exploreBtn.addEventListener("click", () => {
+      isBennoMode = false;
       switchView("trips");
       // Update nav active state manually for the button
       navLinks.forEach(l => l.classList.remove("active"));
@@ -137,6 +151,7 @@ function updateView() {
     type: typeFilter?.value.toLowerCase() || "",
     attrType: attrTypeFilter?.value.toLowerCase() || "",
     sortOrder: sortOrder?.value || "distance",
+    bennoMode: isBennoMode,
   };
 
   const filteredData = filterData(allData, filters);
