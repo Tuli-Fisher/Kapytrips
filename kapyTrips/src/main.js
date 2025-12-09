@@ -2,6 +2,7 @@ import "./style.css";
 import { fetchAllData } from "./services/api.js";
 import { renderParkList, setupFilters, filterData } from "./components/park-list.js";
 import { renderMapView } from "./components/map-view.js";
+import { renderAds } from "./components/ads.js";
 
 import { renderTripDetail } from "./components/trip-detail.js";
 
@@ -18,6 +19,10 @@ const noResultsInfo = document.getElementById("noresults");
 
 async function init() {
   try {
+    // Initialize Ads
+    renderAds(document.getElementById("home-ads"), true);
+    renderAds(document.getElementById("trips-ads"), false);
+
     allData = await fetchAllData();
 
     // Initial Render

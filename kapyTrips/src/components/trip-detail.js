@@ -1,5 +1,6 @@
 import { formatDriveTime } from "../utils/formatters.js";
 
+
 /**
  * Render the trip detail view
  * @param {Object} trip - The trip implementation
@@ -19,7 +20,7 @@ export function renderTripDetail(trip, container, onBack) {
 
     const backBtn = document.createElement("button");
     backBtn.className = "back-btn";
-    backBtn.innerHTML = "← Back to Trips";
+    backBtn.innerHTML = "← Back";
     backBtn.addEventListener("click", onBack);
 
     heroImage.appendChild(backBtn);
@@ -29,81 +30,84 @@ export function renderTripDetail(trip, container, onBack) {
     const content = document.createElement("div");
     content.className = "detail-content";
 
-    // Title & Header Info
+    // Header with Title and Tags
     const header = document.createElement("header");
     header.className = "detail-header";
 
+    const titleRow = document.createElement("div");
+    titleRow.className = "title-row";
+
     const h2 = document.createElement("h2");
     h2.textContent = trip.name;
-    header.appendChild(h2);
+    titleRow.appendChild(h2);
 
     const tags = document.createElement("div");
     tags.className = "tags";
     if (trip.category) tags.appendChild(createTag(trip.category));
     if (trip.type) tags.appendChild(createTag(trip.type));
-    if (trip.good) tags.appendChild(createTag("Great for Kids"));
-    if (trip.restrooms?.toLowerCase().includes("y")) tags.appendChild(createTag("Restrooms Available"));
-    header.appendChild(tags);
 
+    header.appendChild(titleRow);
+    header.appendChild(tags);
     content.appendChild(header);
 
-    // Main Grid Layout
-    const grid = document.createElement("div");
-    grid.className = "detail-grid";
+    // Compact Stats Bar (Replaces Sidebar)
+    const statsBar = document.createElement("div");
+    statsBar.className = "stats-bar";
 
-    // Left Column: Key Info
-    const mainInfo = document.createElement("div");
-    mainInfo.className = "main-info";
+    const driveTime = formatDriveTime(trip.driveTime);
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+        trip.address || `${trip.latitude},${trip.longitude}`
+    )}`;
+
+    statsBar.innerHTML = `
+        <div class="stat-item">
+            <strong>Location</strong>
+            <span>${trip.address || "N/A"}</span>
+        </div>
+        <div class="stat-item">
+            <strong>Time</strong>
+            <span>${driveTime}</span>
+        </div>
+        <div class="stat-item">
+            <strong>Hours</strong>
+            <span>${trip.hours || "Check site"}</span>
+        </div>
+        <div class="stat-item">
+            <strong>Phone</strong>
+            <span>${trip.phoneNumber || "N/A"}</span>
+        </div>
+        <a href="${googleMapsUrl}" target="_blank" class="maps-link-btn">
+            Open in Maps ↗
+        </a>
+    `;
+
+    content.appendChild(statsBar);
+
+    // Description Section
+    const descriptionBox = document.createElement("div");
+    descriptionBox.className = "description-box";
 
     const description = document.createElement("p");
     description.className = "description";
     description.textContent = trip.description || "No description available.";
-    mainInfo.appendChild(description);
+    descriptionBox.appendChild(description);
 
-    // Additional Details (Mocked for now if not in data)
-    if (trip.longDescription) {
-        const longDesc = document.createElement("div");
-        longDesc.innerHTML = trip.longDescription; // Assuming safe HTML or text
-        mainInfo.appendChild(longDesc);
+    if (trip.good) {
+        const extraTag = document.createElement("div");
+        extraTag.className = "extra-info";
+        extraTag.innerHTML = `<strong>Good for:</strong> ${trip.good}`;
+        descriptionBox.appendChild(extraTag);
     }
 
-    grid.appendChild(mainInfo);
+    // Restrooms check
+    if (trip.restrooms?.toLowerCase().includes("y")) {
+        const toiletTag = document.createElement("div");
+        toiletTag.className = "extra-info";
+        toiletTag.innerHTML = `<strong>Restrooms:</strong> Available`;
+        descriptionBox.appendChild(toiletTag);
+    }
 
-    // Right Column: Sidebar Info
-    const sidebar = document.createElement("div");
-    sidebar.className = "detail-sidebar";
-
-    const metaBox = document.createElement("div");
-    metaBox.className = "meta-box";
-
-    metaBox.innerHTML = `
-      <h3>Trip Details</h3>
-      <div class="meta-item">
-          <strong>Location</strong>
-          <span>${trip.address || "N/A"}</span>
-      </div>
-      <div class="meta-item">
-          <strong>Drive Time</strong>
-          <span>${formatDriveTime(trip.driveTime)}</span>
-      </div>
-      <div class="meta-item">
-          <strong>Hours</strong>
-          <span>${trip.hours || "Check website"}</span>
-      </div>
-      <div class="meta-item">
-          <strong>Phone</strong>
-          <span>${trip.phoneNumber || "N/A"}</span>
-      </div>
-      <div class="meta-item">
-        <strong>Coordinates</strong>
-        <span>${trip.latitude || "N/A"}, ${trip.longitude || "N/A"}</span>
-      </div>
-  `;
-
-    sidebar.appendChild(metaBox);
-    grid.appendChild(sidebar);
-
-    content.appendChild(grid);
+    content.appendChild(descriptionBox);
     detailWrapper.appendChild(content);
     container.appendChild(detailWrapper);
 }

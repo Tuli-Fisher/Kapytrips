@@ -86,10 +86,12 @@ nav a.active {
   background-size: cover;
   background-position: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: white;
+  gap: 40px;
 }
 
 .hero h2 {
@@ -288,22 +290,55 @@ main {
 }
 
 /* Right ad column */
+/* Ads Styling */
 aside.ads {
-  position: fixed;
-  right: 20px;
-  top: 120px;
-  width: 230px;
+  /* Default sidebar behavior (Trips View) */
   display: flex;
   flex-direction: column;
   gap: 15px;
+  position: sticky;
+  top: 100px;
+  /* Below header */
+  height: fit-content;
 }
 
-.ads img {
+.ads-container {
+  display: flex;
+  gap: 15px;
+}
+
+/* Horizontal ads for Landing Page */
+.ads-horizontal {
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.ads-vertical {
+  flex-direction: column;
+  width: 100%;
+}
+
+.ads-horizontal .ad-item {
+  width: 250px;
+}
+
+.ad-item img {
   width: 100%;
   border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
   object-fit: cover;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
+
+.ad-item img:hover {
+  transform: scale(1.03);
+}
+
+/* Override trips-layout ads specifically if needed, but generic above works */
+
 
 footer {
   grid-column: 1 / 4;
@@ -418,10 +453,12 @@ footer {
 }
 
 .detail-hero {
-  height: 400px;
+  height: 150px;
+  /* Reduced specific requested height */
   background-size: cover;
   background-position: center;
   position: relative;
+  background-color: #e0e0e0;
 }
 
 .detail-hero::before {
@@ -437,13 +474,17 @@ footer {
   left: 20px;
   background: white;
   border: none;
-  padding: 10px 20px;
+  padding: 6px 14px;
   border-radius: 999px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s;
   z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
 }
 
 .back-btn:hover {
@@ -452,86 +493,121 @@ footer {
 
 .detail-content {
   max-width: 1000px;
-  margin: -60px auto 0;
+  margin: 0 auto;
   position: relative;
   background: white;
-  border-radius: 20px 20px 0 0;
-  padding: 40px;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-  min-height: 500px;
+  padding: 20px 30px;
+  min-height: 400px;
 }
 
 .detail-header {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border-bottom: 1px solid #eee;
-  padding-bottom: 20px;
+  padding-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .detail-header h2 {
-  font-size: 36px;
+  font-size: 28px;
   color: var(--accent);
-  margin: 0 0 15px;
+  margin: 0;
 }
 
-.detail-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 40px;
+/* Stats Bar */
+.stats-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-item strong {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 2px;
+}
+
+.stat-item span {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.maps-link-btn {
+  margin-left: auto;
+  /* Push to right */
+  background: var(--accent);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+}
+
+.maps-link-btn:hover {
+  background: #179b98;
+}
+
+.description-box {
+  margin-top: 10px;
 }
 
 .description {
-  font-size: 18px;
-  line-height: 1.6;
-  color: #444;
-}
-
-.meta-box {
-  background: #f9f9f9;
-  padding: 24px;
-  border-radius: 16px;
-}
-
-.meta-box h3 {
-  margin-top: 0;
-  color: var(--accent);
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-}
-
-.meta-item {
-  margin-bottom: 15px;
-}
-
-.meta-item strong {
-  display: block;
-  font-size: 12px;
-  text-transform: uppercase;
-  color: #888;
-  margin-bottom: 4px;
-}
-
-.meta-item span {
   font-size: 16px;
-  font-weight: 500;
-  color: #333;
+  line-height: 1.5;
+  color: #444;
+  margin-bottom: 15px;
 }
 
-@media (max-width: 768px) {
-  .detail-grid {
-    grid-template-columns: 1fr;
+.extra-info {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+  background: #fff;
+  border: 1px solid #eee;
+  padding: 8px 12px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+@media (max-width: 600px) {
+  .stats-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
   }
 
-  .detail-content {
-    padding: 20px;
-    margin-top: -30px;
-  }
-
-  .detail-hero {
-    height: 300px;
+  .maps-link-btn {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
   }
 
   .detail-header h2 {
-    font-size: 28px;
+    font-size: 24px;
   }
 }
