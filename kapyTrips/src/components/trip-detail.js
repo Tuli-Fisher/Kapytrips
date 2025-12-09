@@ -83,7 +83,14 @@ export function renderTripDetail(trip, container, onBack) {
         trip.address || `${trip.latitude},${trip.longitude}`
     )}`;
 
-    sideCol.innerHTML = `
+    // Mini Map Container
+    const miniMapId = `mini-map-${Date.now()}`;
+    const miniMapContainer = document.createElement("div");
+    miniMapContainer.id = miniMapId;
+    miniMapContainer.className = "mini-map-container";
+
+    // Assemble info-first to prevent layout jumpiness before map loads
+    const infoHtml = `
         <div class="side-stat">
             <span class="label">Location</span>
             <span class="value">${trip.address || "N/A"}</span>
@@ -100,16 +107,39 @@ export function renderTripDetail(trip, container, onBack) {
             <span class="label">Phone</span>
             <span class="value">${trip.phoneNumber || "N/A"}</span>
         </div>
-        <a href="${googleMapsUrl}" target="_blank" class="maps-link-btn-full">
-            Open in Maps ↗
-        </a>
     `;
+
+    sideCol.innerHTML = infoHtml;
+    // Add map container
+    sideCol.appendChild(miniMapContainer);
+
+    // Add Link
+    const linkBtn = document.createElement("a");
+    linkBtn.href = googleMapsUrl;
+    linkBtn.target = "_blank";
+    linkBtn.className = "maps-link-btn-full";
+    linkBtn.textContent = "Open in Google Maps ↗";
+    sideCol.appendChild(linkBtn);
 
     grid.appendChild(mainCol);
     grid.appendChild(sideCol);
     content.appendChild(grid);
     detailWrapper.appendChild(content);
     container.appendChild(detailWrapper);
+
+    // Initialize Map (Lazy load coords if needed)
+    // We import dynamically to avoid top-level await issues if not desired, or just standard import
+    // But importantly, we need coords.
+    import("../services/api.js").then(async ({ getCoordinates }) => {
+        const coords = await getCoordinates(trip);
+        if (coords) {
+            import("./mini-map.js").then(({ initMiniMap }) => {
+                initMiniMap(miniMapId, coords, trip.name);
+            });
+        } else {
+            miniMapContainer.style.display = "none";
+        }
+    });
 }
 
 function createTag(label) {

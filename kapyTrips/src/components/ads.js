@@ -30,7 +30,7 @@ export function renderAds(container, horizontal = false) {
 
         const label = document.createElement("span");
         label.className = "ad-label";
-        label.textContent = "Sponsored";
+        label.textContent = "Powered By";
         adDiv.appendChild(label);
 
         const img = document.createElement("img");

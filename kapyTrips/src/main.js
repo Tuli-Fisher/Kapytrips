@@ -1,7 +1,7 @@
 import "./style.css";
 import { fetchAllData } from "./services/api.js";
 import { renderParkList, setupFilters, filterData } from "./components/park-list.js";
-import { renderMapView } from "./components/map-view.js";
+import { renderMapView } from "./components/leaflet-map.js";
 import { renderAds } from "./components/ads.js";
 
 import { renderTripDetail } from "./components/trip-detail.js";
@@ -45,10 +45,46 @@ async function init() {
     // Navigation Logic
     setupNavigation();
 
+    // Admin Tools
+    setupAdminTools();
+
+    // Listen for Map Detail Clicks
+    window.addEventListener('open-trip-detail', (e) => {
+      if (e.detail) {
+        handleTripClick(e.detail);
+      }
+    });
+
   } catch (error) {
     console.error("Failed to initialize app:", error);
     tilesContainer.innerHTML = '<div class="no-results">Error loading data. Please try again later.</div>';
   }
+}
+
+function setupAdminTools() {
+  const footer = document.querySelector("footer");
+  if (!footer) return;
+
+  const sep = document.createElement("span");
+  sep.innerHTML = " | ";
+  sep.style.color = "#666";
+
+  const btn = document.createElement("a");
+  btn.href = "#";
+  btn.textContent = "Export Coords";
+  btn.style.color = "#666";
+  btn.style.textDecoration = "none";
+  btn.style.fontSize = "0.8em";
+
+  btn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    // Dynamically import to keep bundle small if not needed
+    const { exportMissingCoordinates } = await import("./utils/data-export.js");
+    exportMissingCoordinates(allData);
+  });
+
+  footer.appendChild(sep);
+  footer.appendChild(btn);
 }
 
 function setupNavigation() {

@@ -1,5 +1,5 @@
 const PARK_URL = "https://opensheet.elk.sh/1lc-Lw7vvm3NXp4IvqvpU3i3s4h25MIG6M2dPm3t3T6U/parks";
-const ATTRACTION_URL ="https://opensheet.elk.sh/1lc-Lw7vvm3NXp4IvqvpU3i3s4h25MIG6M2dPm3t3T6U/attractions";
+const ATTRACTION_URL = "https://opensheet.elk.sh/1lc-Lw7vvm3NXp4IvqvpU3i3s4h25MIG6M2dPm3t3T6U/attractions";
 const GEOAPIFY_KEY = import.meta.env.VITE_GEOAPIFY_KEY;
 
 export async function fetchAllData() {
@@ -30,7 +30,7 @@ export async function fetchAllData() {
 /**
  * Get coordinates for a location, either from existing props or geocoding API
  */
-export async function getCoordinates(attraction) {
+export async function getCoordinates(attraction, returnFull = false) {
     // 1. Check if coordinates already exist on the object
     if (attraction.longitude && attraction.latitude) {
         return {
@@ -54,8 +54,18 @@ export async function getCoordinates(attraction) {
             const data = await response.json();
 
             if (data.features && data.features.length > 0) {
-                const [lng, lat] = data.features[0].geometry.coordinates;
+                const feature = data.features[0];
+                const [lng, lat] = feature.geometry.coordinates;
                 console.log(`Geocoded '${attraction.name}':`, { lat, lng });
+
+                if (returnFull) {
+                    return {
+                        lat,
+                        lng,
+                        ...feature.properties
+                    };
+                }
+
                 return { lng, lat };
             }
         } catch (error) {
