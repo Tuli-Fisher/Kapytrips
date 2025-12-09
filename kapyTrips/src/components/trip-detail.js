@@ -11,10 +11,8 @@ export function renderTripDetail(trip, container, onBack) {
 
     const detailWrapper = document.createElement("div");
     detailWrapper.className = "detail-wrapper";
-    // Set faded background
-    // Use the trip image itself as background if available, otherwise fallback
-    const bgUrl = trip.image || trip.pic || "./ChatGPT Image Sep 29, 2025, 08_17_43 PM.png";
-    detailWrapper.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('${bgUrl}')`;
+    // Using global body background now
+
 
     // Content Box
     const content = document.createElement("div");

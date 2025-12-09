@@ -5,6 +5,7 @@ import { renderMapView } from "./components/map-view.js";
 import { renderAds } from "./components/ads.js";
 
 import { renderTripDetail } from "./components/trip-detail.js";
+import { setupContactForm } from "./components/contact.js";
 
 // State
 let allData = [];
@@ -23,6 +24,8 @@ async function init() {
     // Initialize Ads
     renderAds(document.getElementById("home-ads"), true);
     renderAds(document.getElementById("trips-ads"), false);
+
+    setupContactForm();
 
     allData = await fetchAllData();
 

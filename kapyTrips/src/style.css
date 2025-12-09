@@ -10,7 +10,11 @@
 
 body {
   margin: 0;
-  background: var(--bg);
+  /* Global Background */
+  background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('/ChatGPT Image Sep 29, 2025, 08_17_43 PM.png');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
   color: var(--text);
   min-height: 100vh;
   display: flex;
@@ -44,6 +48,9 @@ header {
   align-items: center;
   justify-content: space-between;
   height: 80px;
+  z-index: 100;
+  /* Ensure header stays on top if needed */
+  position: relative;
 }
 
 .header-content h1 {
@@ -82,28 +89,32 @@ nav a.active {
 
 /* Landing Page */
 #landing-view {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-  background-size: cover;
-  background-position: center;
+  /* Removed hero background */
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: white;
+  color: var(--text);
+  /* Dark text on light bg */
   gap: 40px;
 }
 
 .hero h2 {
   font-size: 48px;
   margin: 0 0 20px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: var(--accent);
+  /* Pop color */
+  text-shadow: none;
 }
 
 .hero p {
   font-size: 20px;
   margin: 0 0 40px;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-weight: 500;
+  text-shadow: none;
+  color: #444;
 }
 
 .cta-btn {
@@ -125,17 +136,26 @@ nav a.active {
 
 /* Contact Page */
 #contact-view {
-  background: #fff;
+  /* Transparent to show body bg */
+  background: transparent;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  /* Changed from center to allow custom top spacing */
   justify-content: center;
+  padding-top: 30px;
+  /* Space between header and box */
+  padding-bottom: 30px;
+  /* Space at bottom */
 }
 
 .contact-container {
-  max-width: 600px;
+  width: 100%;
+  max-width: 800px;
+  /* Made wider (was 600px) */
   text-align: center;
-  padding: 40px;
-  background: #f9f9f9;
+  padding: 25px 40px;
+  /* Card style */
+  background: white;
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
@@ -449,10 +469,8 @@ footer {
 /* Trip Detail View - Box Layout */
 .detail-wrapper {
   min-height: 100vh;
-  background-color: #f0f0f0;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  /* Background handled by body */
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -620,4 +638,76 @@ footer {
     border-left: none;
     border-top: 1px solid #eee;
   }
+}
+
+/* Contact Form Styles */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  text-align: left;
+  margin-top: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin-left: 2px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-family: inherit;
+  font-size: 15px;
+  transition: border-color 0.2s;
+  background: #f9f9f9;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: #fff;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.contact-form button {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.form-result {
+  margin-bottom: 15px;
+  /* Changed from margin-top since it's now at the top */
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.form-result.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.form-result.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }

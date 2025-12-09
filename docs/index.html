@@ -1,12 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>kapytrips</title>
-    <link rel="icon" type="image/x-ico" href="../favicon-32x32.png" />
-  </head>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/Kapytrips/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kapytrips</title>
+  <link rel="icon" type="image/x-ico" href="../favicon-32x32.png">
+  <script type="module" crossorigin src="/Kapytrips/assets/index-CWOTb1rh.js"></script>
+  <link rel="stylesheet" crossorigin href="/Kapytrips/assets/index-B47YcGSU.css">
+</head>
+
+<body>
 
   <body>
     <header>
@@ -18,6 +23,7 @@
         <ul>
           <li><a href="#" data-view="landing" class="active">Home</a></li>
           <li><a href="#" data-view="trips">Trips</a></li>
+          <li><a href="#" data-view="benno-trips">Usher Benno's Trips</a></li>
           <li><a href="#" data-view="contact">Contact</a></li>
         </ul>
       </nav>
@@ -38,10 +44,35 @@
       <div class="contact-container">
         <h2>Contact Me</h2>
         <p>Have questions or suggestions? Reach out!</p>
-        <p>
-          Email:
-          <a href="mailto:contact@kapytrips.com">contact@kapytrips.com</a>
-        </p>
+
+        <div id="form-result" class="form-result" style="display: none;"></div>
+
+        <!-- 
+          NOTE: To make this form work, you need a free Access Key from Web3Forms.
+          1. Go to https://web3forms.com/
+          2. Enter your email to get an Access Key.
+          3. Paste the Access Key in the value attribute below.
+        -->
+        <form id="contact-form" class="contact-form">
+          <input type="hidden" name="access_key" value="7ddb64da-e766-40e4-a6a4-d9121457c1cd">
+
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" required placeholder="Your Name">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required placeholder="Your Email">
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea name="message" id="message" rows="5" required placeholder="Your Message"></textarea>
+          </div>
+
+          <button type="submit" class="cta-btn">Send Message</button>
+        </form>
       </div>
     </div>
 
@@ -64,7 +95,7 @@
           </div>
 
           <select id="sortOrder">
-            <option value="distance">Sort By Distance</option>
+            <option value="distance">Sort By Distance </option>
             <option value="name">Sort By Name</option>
           </select>
 
@@ -102,6 +133,6 @@
 
     <footer>© Kapy Trips — An Adventure In The Making</footer>
     <!-- Google Maps Loader managed by src/services/google-maps.js -->
-    <script type="module" src="kapyTrips/src/main.js"></script>
   </body>
+
 </html>
