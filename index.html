@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kapytrips</title>
+  <link rel="icon" type="image/x-ico" href="../favicon-32x32.png">
+</head>
+
+<body>
+
+  <body>
+    <header>
+      <div class="header-content">
+        <h1>KAPY TRIPS</h1>
+        <p>An Adventure In The Making</p>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#" data-view="landing" class="active">Home</a></li>
+          <li><a href="#" data-view="trips">Trips</a></li>
+          <li><a href="#" data-view="contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Landing View -->
+    <div id="landing-view" class="view">
+      <div class="hero">
+        <h2>Discover Your Next Adventure</h2>
+        <p>Explore the best parks and trips curated just for you.</p>
+        <button id="explore-btn" class="cta-btn">Explore Now</button>
+      </div>
+      <div id="home-ads"></div>
+    </div>
+
+    <!-- Contact View -->
+    <div id="contact-view" class="view hidden">
+      <div class="contact-container">
+        <h2>Contact Me</h2>
+        <p>Have questions or suggestions? Reach out!</p>
+        <p>Email: <a href="mailto:contact@kapytrips.com">contact@kapytrips.com</a></p>
+      </div>
+    </div>
+
+    <!-- Trips View (Original Content) -->
+    <div id="trips-view" class="view hidden trips-layout">
+      <aside class="filters">
+        <h3>Filters</h3>
+        <div class="filters-grid">
+          <!-- <select id="list-map">
+            <option value="">List Veiw</option>
+            <option value="">Map Veiw</option>
+          </select> -->
+
+          <div class="switch-container">
+            <span class="switch-label">List</span>
+            <div class="switch" id="viewSwitch">
+              <div class="slider"></div>
+            </div>
+            <span class="switch-label">Map</span>
+          </div>
+
+          <select id="sortOrder">
+            <option value="distance">Sort By Distance </option>
+            <option value="name">Sort By Name</option>
+          </select>
+
+          <input id="searchInput" type="text" placeholder="Search parks..." />
+          <select id="typeFilter">
+            <option value="">All types</option>
+          </select>
+          <select id="attrTypeFilter">
+            <option value="">All types</option>
+          </select>
+          <!-- <select id="amenityFilter">
+            <option value="">Any amenity</option>
+          </select> -->
+          <button id="reset" class="reset-btn">Reset</button>
+        </div>
+      </aside>
+
+      <main>
+        <div id="tiles"></div>
+        <div id="noresults" class="no-results" style="display: none">
+          No parks found.
+        </div>
+        <div id="map" class="map-view"></div>
+      </main>
+
+      <aside id="trips-ads" class="ads">
+        <!-- Ads injected via JS -->
+      </aside>
+    </div>
+
+    <!-- Trip Detail View -->
+    <div id="trip-detail-view" class="view hidden">
+      <!-- Content will be injected here -->
+    </div>
+
+    <footer>© Kapy Trips — An Adventure In The Making</footer>
+    <!-- Google Maps Loader managed by src/services/google-maps.js -->
+    <script type="module" src="kapyTrips/src/main.js"></script>
+  </body>
+
+</html>
